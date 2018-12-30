@@ -243,6 +243,22 @@ function setTitle()
     export PROMPT_COMMAND=
 }
 
+function peek() {
+    local file=$1
+    shift
+    case $file in
+        *.tar)
+            tar tvf $file ;;
+        *.tbz2 | *.tar.bz2)
+            tar tvfj $file ;;
+        *.tgz | *.tar.gz)
+            tar tvfz $file ;;
+        *.zip)
+            unzip -l $file ;;
+        *) echo "Unrecognized file type $file" ;;
+    esac
+}
+
 # Usage:
 # pack final.tar.gz File1 File2 File3
 # pack final.tar.gz Directory1 Directory2 File1 ...
@@ -268,7 +284,7 @@ function pack () {
           *.tbz2) tar chjf $file $*  ;;
           *.tar.gz)  tar chzf $file $*  ;;
           *.tgz)     tar chzf $file $*  ;;
-          *.zip)     zip $file $*      ;;
+          *.zip)     zip -r $file $*      ;;
           *)         echo "File type not recognized" ;;
        esac
    fi

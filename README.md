@@ -195,6 +195,17 @@ unpack compressed.bz2
 unpack compressed.gz
 ```
 
+### peek
+Lists all files in archive file
+
+```bash
+peek compressed.tar.gz
+peek archive.tar
+peek compressed.tgz
+peek compressed.zip
+peek compressed.bz2
+```
+
 ## Encryption/Decryption
 You can use **crypt.sh** script to encrypt/decrypt data.
 
