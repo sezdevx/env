@@ -96,7 +96,6 @@ setupDisplay;
 setupColors;
 resetTitle;
 
-alias localTime="TZ=$LOCAL_TIME_ZONE date  '+%H:%M:%S'"
 
 # [Prompt]
 if [ "`command -v git`" ]; then

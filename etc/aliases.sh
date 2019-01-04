@@ -67,6 +67,7 @@ alias tmux="tmux -f $ENV_HOME_DIR/etc/tmux.conf"
 
 alias localDate="TZ=$LOCAL_TIME_ZONE date  '+$ISO_DATE_FMT'"
 alias utcDate="TZ=Etc/UTC date -u '+$ISO_DATE_FMT'"
+alias localTime="TZ=$LOCAL_TIME_ZONE date  '+%H:%M:%S'"
 
 
 # display pid too
