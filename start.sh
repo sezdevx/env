@@ -70,7 +70,7 @@ set show-all-if-ambiguous On
 
 # disable messaging, turn off talk and write (not installed on cygwin by default)
 if [[ `command -v mesg` ]]; then
-    mesg n
+    tty -s && mesg n
 fi
 
 # don't attempt to search PATH for completions when on an empty line
