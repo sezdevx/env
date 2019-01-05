@@ -96,12 +96,12 @@ setupDisplay;
 setupColors;
 resetTitle;
 
-
 # [Prompt]
 if [ "`command -v git`" ]; then
     case $TERM in
         xterm*)
-        PS1="\n\[$Blue\]\u\[$NC\][\$(localTime)]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
+        # all these weird syntax just to satisfy the git bash
+        PS1='\n'$"\[$Blue\]\u\[$NC\][\$(localTime)]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]"$'\n% '
             ;;
         *)
             PS1="\n\[$Blue\]\u\[$NC\][\$(localTime)]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "

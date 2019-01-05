@@ -395,7 +395,8 @@ function git_prompt()
 {
     local repo=$(git rev-parse --show-toplevel 2> /dev/null)
     if [[ -e $repo ]]; then
-        local response=`git branch 2>/dev/null | grep '^*' | colrm 1 2`
+        #local response=`git branch 2>/dev/null | grep '^*' | colrm 1 2`
+        local response=`git branch 2>/dev/null | grep '^*' | cut -d ' ' -f2`
         local git_status=$(LC_ALL=C git status --untracked-files=normal --porcelain)
         if [[ "$?" -ne 0 ]]; then
             echo "(error)";
