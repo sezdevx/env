@@ -57,7 +57,7 @@ alias rm='rm -i'
 alias mv='mv -i'
 
 # process management
-alias ps='ps aux'
+#alias ps='ps aux'
 
 #paths
 alias paths='echo -e ${PATH//:/\\n}'
