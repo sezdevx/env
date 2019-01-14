@@ -63,6 +63,7 @@ alias mv='mv -i'
 alias paths='echo -e ${PATH//:/\\n}'
 # programs
 alias emacs="emacs --load ${ENV_HOME_DIR}/etc/emacs/config.el"
+alias vim="vim -u ${ENV_HOME_DIR}/etc/vimrc"
 alias tmux="tmux -f $ENV_HOME_DIR/etc/tmux.conf"
 
 alias localDate="TZ=$LOCAL_TIME_ZONE date  '+$ISO_DATE_FMT'"
