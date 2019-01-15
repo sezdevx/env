@@ -19,6 +19,15 @@ fi
 
 ISO_DATE_FMT='%Y-%m-%d %H:%M:%S %Z'
 
+function hasCommand()
+{
+    if [[ `command -v $1` ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # note that when used in if, in bash it checks if isAbsoluteDir successfully executed
 # which means it returns 0, thus this function returns 0 when the path starts with /
 function isAbsoluteDir()

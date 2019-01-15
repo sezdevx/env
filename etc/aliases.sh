@@ -39,7 +39,7 @@ alias sane="stty sane"
 alias edel="\rm *~; \rm .*~"
 
 # to reread this file from the shell
-alias reloadEnv=". $ENV_HOME_DIR/start.sh"
+alias reloadEnv=". $ENV_BASE_DIR/start.sh"
 
 # easier navigation
 alias cd..="cd .."
@@ -62,9 +62,9 @@ alias mv='mv -i'
 #paths
 alias paths='echo -e ${PATH//:/\\n}'
 # programs
-alias emacs="emacs --load ${ENV_HOME_DIR}/etc/emacs/config.el"
-alias vim="vim -u ${ENV_HOME_DIR}/etc/vimrc"
-alias tmux="tmux -f $ENV_HOME_DIR/etc/tmux.conf"
+alias emacs="emacs --load ${ENV_BASE_DIR}/etc/emacs/config.el"
+alias vim="vim -u ${ENV_BASE_DIR}/etc/vimrc"
+alias tmux="tmux -f $ENV_BASE_DIR/etc/tmux.conf"
 
 alias localDate="TZ=$LOCAL_TIME_ZONE date  '+$ISO_DATE_FMT'"
 alias utcDate="TZ=Etc/UTC date -u '+$ISO_DATE_FMT'"

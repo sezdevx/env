@@ -29,8 +29,10 @@ If you pass it without quote, bash will expand *~ and pass the matching files to
 '*~'.
 
 ### Environment variables
-* **`ENV_HOME_DIR`**: where this project resides
-* **`ENV_DATA_DIR`**: always defined as `~/.envData`
+* **`ENV_BASE_DIR`**: where this project resides
+* **`ENV_HOME_DIR`**: always defined as `~/.env`, but you can change it at `start.sh`
+  * `~/.env/ext`: where config and script files are located, extension of env itself
+  * `~/.env/data`: where data files are located, such as emacs backup files
 
 ### Variables defined in lib.sh
 * **`ENV_ARCH`**: either `32` or `64` depending on the architecture of the CPU
@@ -43,8 +45,8 @@ If you pass it without quote, bash will expand *~ and pass the matching files to
 ### Customizations
 Consider looking at the files below for customizations.
 ```
-$ENV_HOME_DIR/etc/aliases.sh
-$ENV_HOME_DIR/etc/settings.sh
+$ENV_BASE_DIR/etc/aliases.sh
+$ENV_BASE_DIR/etc/settings.sh
 ```
 
 ### Local Time Zone
@@ -302,7 +304,7 @@ Displays general system information which includes
 * For each file system available space and use percentage
 
 ## Managing simple bash variables
-**manageVars.sh** is used to manage variables in **$ENV_DATA_DIR\bash\bashVars.sh** file.
+**manageVars.sh** is used to manage variables in **$ENV_HOME_DIR/ext/bash/bashVars.sh** file.
 This file is a set of key value pairs where
 each key is a variable exported by default. For example, say there is a long host name for a dev
 machine you regularly use. Instead of typing the host name everytime, you can set dev to this

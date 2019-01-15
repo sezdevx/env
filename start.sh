@@ -4,27 +4,24 @@
 # unfortunately because of a bug I had to disable
 # set -u
 
-# where we are installed at
-export ENV_HOME_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-export ENV_DATA_DIR=$HOME/.envData # the data directory
-if [ ! -d $ENV_DATA_DIR ]; then
-    mkdir -p $ENV_DATA_DIR/bash # history file, bashVars.sh
-    mkdir -p $ENV_DATA_DIR/emacs/backup # emacs backup files
-    mkdir -p $ENV_DATA_DIR/private # where we keep private data
-    chmod 700 $ENV_DATA_DIR/private
-fi
+export ENV_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export ENV_HOME_DIR=$HOME/.env # the env home directory
 
-# custom settings
-source $ENV_HOME_DIR/etc/settings.sh
-source $ENV_HOME_DIR/lib.sh
-source $ENV_HOME_DIR/etc/aliases.sh
-# variables in the form of web='web.test.com', so you can ssh $web
-if [[ -e $ENV_DATA_DIR/bash/bashVars.sh ]]; then
-    source $ENV_DATA_DIR/bash/bashVars.sh;
-else
-    touch $ENV_DATA_DIR/bash/bashVars.sh # host variables for convenience
-fi
+[[ -d $ENV_HOME_DIR/ext/bash ]] || mkdir -p $ENV_HOME_DIR/ext/bash
+[[ -d $ENV_HOME_DIR/ext/emacs ]] || mkdir -p $ENV_HOME_DIR/ext/emacs
+[[ -d $ENV_HOME_DIR/data/bash ]] || mkdir -p $ENV_HOME_DIR/data/bash
+[[ -d $ENV_HOME_DIR/data/emacs ]] || mkdir -p $ENV_HOME_DIR/data/emacs
+[[ -d $ENV_HOME_DIR/data/vim ]] || mkdir -p $ENV_HOME_DIR/data/vim
 
+# [Custom Settings]
+[[ -f $ENV_HOME_DIR/ext/bash/bashVars.sh ]] && source $ENV_HOME_DIR/ext/bash/bashVars.sh
+source $ENV_BASE_DIR/etc/settings.sh
+source $ENV_BASE_DIR/lib.sh
+source $ENV_BASE_DIR/etc/aliases.sh
+
+# [Paths]
+prependPath PATH $ENV_BASE_DIR/bin
+[[ -d $ENV_BASE_DIR/bin/$ENV_PLATFORM/$ENV_ARCH ]] && prependPath PATH $ENV_BASE_DIR/bin/$ENV_PLATFORM/$ENV_ARCH
 
 # [Other Environment Variables]
 export TZ=Etc/UTC # use UTC by default everywhere
@@ -32,19 +29,8 @@ export PAGER=less
 export LESSCHARSET='utf-8'
 export TMOUT=0 # never logout due to inactivity
 
-# bc
-if [[ `command -v bc` ]]; then
-    export BC_ENV_ARGS="$ENV_HOME_DIR/etc/bc_init.txt"
-    alias c='set -f; c'
-    function c()
-    {
-        bc <<< "$@"
-        set +f
-    }
-fi
-
 # [History]
-export HISTFILE=$ENV_DATA_DIR/bash/history
+export HISTFILE=$ENV_HOME_DIR/data/bash/history
 export HISTSIZE=10000
 export HISTIGNORE="&:bg:fg:lsl:lsll:lsa:ls:history:exit"
 export HISTCONTROL="ignoreboth"
@@ -69,9 +55,7 @@ set -o notify
 set show-all-if-ambiguous On
 
 # disable messaging, turn off talk and write (not installed on cygwin by default)
-if [[ `command -v mesg` ]]; then
-    tty -s && mesg n
-fi
+[[ `command -v mesg` ]] &&  tty -s && mesg n
 
 # don't attempt to search PATH for completions when on an empty line
 shopt -s no_empty_cmd_completion
@@ -79,54 +63,61 @@ shopt -s no_empty_cmd_completion
 # check window size after each command, update the values of LINES and COLUMNS
 shopt -s checkwinsize
 
-# [Core Files]
+# disable core
 ulimit -S -c 0
-
-# [PATH]
-prependPath PATH $ENV_HOME_DIR/bin
-if [ -e $ENV_HOME_DIR/bin/$ENV_PLATFORM/$ENV_ARCH ]; then
-    prependPath PATH $ENV_HOME_DIR/bin/$ENV_PLATFORM/$ENV_ARCH
-fi
-
-# [Locale]
-# locale -a to see all available locales
 
 # [Display]
 setupDisplay;
 setupColors;
 resetTitle;
 
-# [Prompt]
-if [ "`command -v git`" ]; then
-    case $TERM in
-        xterm*)
-        # all these weird syntax just to satisfy the git bash
-        PS1='\n'$"\[$Blue\]\u\[$NC\][\$(localTime)]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]"$'\n% '
-            ;;
-        *)
-            PS1="\n\[$Blue\]\u\[$NC\][\$(localTime)]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
-            ;;
-    esac
-else
-    case $TERM in
-        xterm*)
-        PS1="\n\[$Blue\]\u\[$NC\][\t]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
-            ;;
-        *)
-            PS1="\n\[$Blue\]\u\[$NC\][\t]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
-            ;;
-    esac
+# [bc]
+if hasCommand 'bc' ; then
+    export BC_ENV_ARGS="$ENV_BASE_DIR/etc/bc_init.txt"
+    alias c='set -f; c'
+    function c()
+    {
+        bc <<< "$@"
+        set +f
+    }
 fi
+
 case "$-" in
     *i*) # interactive
         # [Keyboard Bindings]
-        bind -f $ENV_HOME_DIR/etc/inputrc
+        bind -f $ENV_BASE_DIR/etc/inputrc
         if [ -x xrdb ] ; then
-            xrdb -load $ENV_HOME_DIR/etc/XDefaults
+            xrdb -load $ENV_BASE_DIR/etc/XDefaults
         fi
         ;;
     *) # non-interactive
         ;;
 esac
 
+# [Prompt]
+if hasCommand 'git' ; then
+    PS1='\n'$"\[$Blue\]\u\[$NC\][\$(localTime)]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]"$'\n% '
+else
+    PS1="\n\[$Blue\]\u\[$NC\][\t]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
+fi
 
+
+#    case $TERM in
+#        xterm*)
+#        # all these weird syntax just to satisfy the git bash
+#        PS1='\n'$"\[$Blue\]\u\[$NC\][\$(localTime)]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]"$'\n% '
+#            ;;
+#        *)
+#            PS1="\n\[$Blue\]\u\[$NC\][\$(localTime)]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
+#            ;;
+#    esac
+
+
+#    case $TERM in
+#        xterm*)
+#        PS1="\n\[$Blue\]\u\[$NC\][\t]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
+#            ;;
+#        *)
+#            PS1="\n\[$Blue\]\u\[$NC\][\t]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
+#            ;;
+#    esac

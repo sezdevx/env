@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-if [[ -z $ENV_DATA_DIR ]]; then
-    echo "env is not installed properly: Undefined ENV_DATA_DIR environment variable"
+if [[ -z $ENV_HOME_DIR ]]; then
+    echo "env is not installed properly: Undefined ENV_HOME_DIR environment variable"
+    echo "Make sure your bash includes start.sh in .profile or .bashrc files"
     exit 1
 fi
-ENV_DATA_DIR=$ENV_DATA_DIR
+ENV_EXT_DIR="$ENV_HOME_DIR/ext"
 
 function showHelp ()
 {
@@ -19,19 +20,19 @@ function addVar ()
 {
     local name=$1
     local value=$2
-    if [[ -e $ENV_DATA_DIR/bash/bashVars.sh && -n "$(grep ${name}= $ENV_DATA_DIR/bash/bashVars.sh)" ]]; then
-        echo "Found $name in $ENV_DATA_DIR/bash/bashVars.sh, updating its value"
-        sed -i".bak" "/export $name=/d" $ENV_DATA_DIR/bash/bashVars.sh
+    if [[ -e $ENV_EXT_DIR/bash/bashVars.sh && -n "$(grep ${name}= $ENV_EXT_DIR/bash/bashVars.sh)" ]]; then
+        echo "Found $name in $ENV_EXT_DIR/bash/bashVars.sh, updating its value"
+        sed -i".bak" "/export $name=/d" $ENV_EXT_DIR/bash/bashVars.sh
     fi
-    echo "export $name='$value'" >> $ENV_DATA_DIR/bash/bashVars.sh
+    echo "export $name='$value'" >> $ENV_EXT_DIR/bash/bashVars.sh
 }
 
 function removeVar ()
 {
     local name=$1
-    if [[ -e $ENV_DATA_DIR/bash/bashVars.sh && -n "$(grep ${name}= $ENV_DATA_DIR/bash/bashVars.sh)" ]]; then
-        echo "Removed $name in $ENV_DATA_DIR/bash/bashVars.sh"
-        sed -i".bak" "/export $name=/d" $ENV_DATA_DIR/bash/bashVars.sh
+    if [[ -e $ENV_EXT_DIR/bash/bashVars.sh && -n "$(grep ${name}= $ENV_EXT_DIR/bash/bashVars.sh)" ]]; then
+        echo "Removed $name in $ENV_EXT_DIR/bash/bashVars.sh"
+        sed -i".bak" "/export $name=/d" $ENV_EXT_DIR/bash/bashVars.sh
         #unset local
     else
         echo "No such var: $name"
@@ -40,8 +41,8 @@ function removeVar ()
 
 function listVars ()
 {
-    if [ -e $ENV_DATA_DIR/bash/bashVars.sh ]; then
-        cat $ENV_DATA_DIR/bash/bashVars.sh
+    if [ -e $ENV_EXT_DIR/bash/bashVars.sh ]; then
+        cat $ENV_EXT_DIR/bash/bashVars.sh
     else
         echo "Empty List"
     fi

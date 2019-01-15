@@ -166,11 +166,6 @@ if [ ! -t 1 ]; then
 fi
 
 printf "%14s: $ENV_PLATFORM ($ENV_ARCH bit)\n" "System"
-if [[ ! -z "$ENV_HOME_DIR" ]]; then
-    printf "%14s: $ENV_HOME_DIR \n" "Home Directory"
-    printf "%14s: $ENV_DATA_DIR \n" "Data Directory"
-fi
-printf "\n"
 
 if [ $IP4_UP = "true" ]; then
     if [ $DNS_UP = "true" ]; then
