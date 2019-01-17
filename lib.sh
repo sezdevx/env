@@ -2,9 +2,9 @@
 
 # Mac, Linux, Cygwin, WSL
 ENV_PLATFORM="Linux"
+ENV_ARCH="32"
 
 # 32 or 64
-ENV_ARCH="32"
 unameStr=`uname`
 if [[ "$unameStr" = "Darwin" ]]; then
     ENV_PLATFORM="Mac";
@@ -19,6 +19,11 @@ fi
 
 ISO_DATE_FMT='%Y-%m-%d %H:%M:%S %Z'
 
+# it returns 0, if command exists, 1 otherwise
+# it may appear to be illogical, but the idea is that if hasCommand 'command'
+# would execute if the system has the command, in such cases, we have to return 0
+# because in shell environment a 0 return means success, whereas any other value
+# means failure
 function hasCommand()
 {
     if [[ `command -v $1` ]]; then
@@ -39,6 +44,8 @@ function isAbsoluteDir()
     fi
 }
 
+# you can't assign the result of this function directly, so
+# value=$(getRealPath /path/to/something)
 function getRealPath()
 {
     if isAbsoluteDir $1 ; then
@@ -210,6 +217,8 @@ function setupColors()
     esac
 }
 
+# to list files in tar or zip archives
+# Usage: peek compressed.tar.gz
 function peek() {
     local file=$1
     shift

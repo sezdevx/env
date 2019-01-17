@@ -66,6 +66,26 @@ shopt -s checkwinsize
 # disable core
 ulimit -S -c 0
 
+# [bc]
+if hasCommand 'bc' ; then
+    export BC_ENV_ARGS="$ENV_BASE_DIR/etc/bc_init.txt"
+    # you can do simple math as "c 2 + 5" or
+    # don't give any arguments and instead type the expression
+    alias c='set -f; c'
+    function c()
+    {
+        local line
+        if [[ $# == 0 ]]; then
+            read line
+        else
+            line="$@"
+        fi
+        bc <<< $line
+        set +f
+    }
+fi
+
+
 function setupDisplay ()
 {
    if [ -z ${DISPLAY:=""} ]; then
@@ -189,25 +209,6 @@ function git_prompt()
 setupDisplay;
 setupColors;
 resetTitle;
-
-# [bc]
-if hasCommand 'bc' ; then
-    export BC_ENV_ARGS="$ENV_BASE_DIR/etc/bc_init.txt"
-    # you can do simple math as "c 2 + 5" or
-    # don't give any arguments and instead type the expression
-    alias c='set -f; c'
-    function c()
-    {
-        local line
-        if [[ $# == 0 ]]; then
-            read line
-        else
-            line="$@"
-        fi
-        bc <<< $line
-        set +f
-    }
-fi
 
 case "$-" in
     *i*) # interactive
