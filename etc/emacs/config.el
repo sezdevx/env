@@ -57,9 +57,9 @@
 ;;Setup Backup
 (setq make-backup-files t)
 (setq version-control t)
-(setq delete-old-versions t)            ; clean up a little
-(setq kept-new-versions 2)              ; keep 6 new
-(setq kept-old-versions 1)              ; keep only 2 old
+(setq delete-old-versions t)
+(setq kept-new-versions 2)
+(setq kept-old-versions 1)
 (defvar backup-dir (substitute-in-file-name "$ENV_HOME_DIR/data/emacs"))
 (setq backup-directory-alist (list (cons ".*" backup-dir)))
 
@@ -191,3 +191,20 @@
   (untabify (point-min) (point-max)))
 
 (global-set-key (kbd "<f12>") 'iwb)
+
+;;(scroll-bar-mode 0)
+;;(tool-bar-mode -1)
+(menu-bar-mode 0)
+
+
+
+;; both are needed to prevent confirm appearing
+;(setq ido-use-filename-at-point 'guess)
+;(setq ido-create-new-buffer 'always)
+;(defadvice ido-switch-buffer (around no-confirmation activate)
+;  (let ((confirm-nonexistent-file-or-buffer nil))
+;    ad-do-it))
+;(setq ido-file-extensions-order '(".java" ".c" ".cc" ".h" ".txt" ".py" ".emacs" ".el" ".ini" ".js" ".css"))
+;(setq ido-ignore-extensions t)
+;(require 'ido)
+;(ido-mode t)

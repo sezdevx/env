@@ -66,6 +66,125 @@ shopt -s checkwinsize
 # disable core
 ulimit -S -c 0
 
+function setupDisplay ()
+{
+   if [ -z ${DISPLAY:=""} ]; then
+       getXServer;
+       if [[ -z ${XSERVER:=""}  || ${XSERVER} == $(hostname) || ${XSERVER} == "unix" ]]; then
+          DISPLAY=":0.0"          # Localhost
+       else
+          DISPLAY=${XSERVER}:0.0  # Remote
+       fi
+   fi
+   export DISPLAY
+}
+
+# Setting X Title
+function resetTitle()
+{
+    export PROMPT_COMMAND='echo -ne "\033]0;${HOSTNAME}\007"'
+}
+
+# You can use this function from shell to custom set the title
+function setTitle()
+{
+    case "$TERM" in
+        *term | rxvt | xterm-256color)
+            echo -n -e "\033]0;$*\007" ;;
+        *)
+            ;;
+    esac
+    export PROMPT_COMMAND=
+}
+
+# X Window Related
+function getXServer()
+{
+    case $TERM in
+       xterm )
+            XSERVER=$(who am i | awk '{print $NF}' | tr -d ')''(' )
+            XSERVER=${XSERVER%%:*}
+            ;;
+    esac
+}
+
+function git_prompt()
+{
+    local repo=$(git rev-parse --show-toplevel 2> /dev/null)
+    if [[ -e $repo ]]; then
+        #local response=`git branch 2>/dev/null | grep '^*' | colrm 1 2`
+        local response=`git branch 2>/dev/null | grep '^*' | cut -d ' ' -f2`
+        local git_status=$(LC_ALL=C git status --untracked-files=normal --porcelain)
+        if [[ "$?" -ne 0 ]]; then
+            echo "(error)";
+            return
+        fi
+        # below code is from (modified from original version)
+        # https://github.com/magicmonty/bash-git-prompt/blob/master/LICENSE.txt
+        local staged_count=0
+        local modified_count=0
+        local conflict_count=0
+        local untracked_count=0
+        local status=''
+        local line=''
+        while IFS='' read -r line || [[ -n "$line" ]]; do
+            status=${line:0:2}
+            while [[ -n $status ]]; do
+                case "$status" in
+                    \?\?)
+                            ((untracked_count++));
+                            local file=${line:3}
+                            if [[ $file =~ ^\..* ]]; then
+                                ((untracked_count--));
+                            fi
+                            break ;;
+                    U?) ((conflict_count++)); break;;
+                    ?U) ((conflict_count++)); break;;
+                    DD) ((conflict_count++)); break;;
+                    AA) ((conflict_count++)); break;;
+                    #two character matches, first loop
+                    ?M) ((modified_count++)) ;;
+                    ?D) ((modified_count++)) ;;
+                    ?\ ) ;;
+                    #single character matches, second loop
+                    U) ((conflict_count++)) ;;
+                    \ ) ;;
+                    *) ((staged_count++)) ;;
+                esac
+                status=${status:0:(${#status}-1)}
+            done
+        done <<< "$git_status"
+        if [[ $modified_count > 0 || $conflict_count > 0 || $staged_count > 0 || $untracked_count > 0 ]]; then
+            response="$response|"
+            local putSpace=0
+            [[ $conflict_count > 0 ]] && response="${response}x$conflict_count" && putSpace=1
+            if [[ $modified_count > 0 ]]; then
+                if [[ $putSpace == 1 ]]; then
+                    response="$response "
+                fi
+                response="${response}+$modified_count"
+                putSpace=1
+            fi
+            if [[ $staged_count > 0 ]]; then
+                if [[ $putSpace == 1 ]]; then
+                    response="$response "
+                fi
+                response="${response}*$staged_count"
+                putSpace=1
+            fi
+            if [[ $untracked_count > 0 ]]; then
+                if [[ $putSpace == 1 ]]; then
+                    response="$response "
+                fi
+                response="${response}?$untracked_count"
+            fi
+        fi
+        echo "($response)"
+    else
+        echo ''
+    fi
+}
+
 # [Display]
 setupDisplay;
 setupColors;
@@ -74,10 +193,18 @@ resetTitle;
 # [bc]
 if hasCommand 'bc' ; then
     export BC_ENV_ARGS="$ENV_BASE_DIR/etc/bc_init.txt"
+    # you can do simple math as "c 2 + 5" or
+    # don't give any arguments and instead type the expression
     alias c='set -f; c'
     function c()
     {
-        bc <<< "$@"
+        local line
+        if [[ $# == 0 ]]; then
+            read line
+        else
+            line="$@"
+        fi
+        bc <<< $line
         set +f
     }
 fi

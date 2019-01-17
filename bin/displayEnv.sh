@@ -160,6 +160,7 @@ fi
 
 
 if [ ! -t 1 ]; then
+    # if not interactive, then don't output colors
     NC=""
     Red=""
     Blue=""
