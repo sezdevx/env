@@ -5,6 +5,10 @@ function cleanUp()
     \rm dir/.git/test.py
     \rm dir/.git/HelloWorld.java
     \rm a.tar.gz
+    \rm a.tar.bz2
+    \rm a.tgz
+    \rm a.tbz2
+    \rm a.tar
 }
 
 trap cleanUp EXIT
@@ -43,9 +47,34 @@ files=($(findGrep "Jane" '*.txt'))
 [[ ${#files[@]} == 1 ]] || (echo "findGrep 'Jane' '*.txt' failed" && exit 1)
 IFS=$oldIFS
 
+pack a.tar dir/
+[[ -f a.tar ]] || (echo "pack a.tar dir failed" && exit 1)
+[[ $(peek a.tar | grep "/main/com/java/ext/User.java") ]] || (echo "peek failed" && exit 1)
+
+pack a.tar.gz a.tar
+pack a.tar.bz2 a.tar
+[[ ! $(peek a.tar.gz | grep "/main/com/java/ext/User.java") ]] || (echo "peek failed" && exit 1)
+[[ ! $(peek a.tar.bz2 | grep "/main/com/java/ext/User.java") ]] || (echo "peek failed" && exit 1)
+
+\rm a.tar.gz
+\rm a.tar.bz2
+
 pack a.tar.gz dir/
 [[ -f a.tar.gz ]] || (echo "pack a.tar.gz dir failed" && exit 1)
 [[ $(peek a.tar.gz | grep "/main/com/java/ext/User.java") ]] || (echo "peek failed" && exit 1)
+
+pack a.tar.bz2 dir/
+[[ -f a.tar.bz2 ]] || (echo "pack a.tar.bz2 dir failed" && exit 1)
+[[ $(peek a.tar.bz2 | grep "/main/com/java/ext/User.java") ]] || (echo "peek failed" && exit 1)
+
+pack a.tgz dir/
+[[ -f a.tgz ]] || (echo "pack a.tgz dir failed" && exit 1)
+[[ $(peek a.tgz | grep "/main/com/java/ext/User.java") ]] || (echo "peek failed" && exit 1)
+
+pack a.tbz2 dir/
+[[ -f a.tbz2 ]] || (echo "pack a.tbz2 dir failed" && exit 1)
+[[ $(peek a.tbz2 | grep "/main/com/java/ext/User.java") ]] || (echo "peek failed" && exit 1)
+
 
 md5=$(getMd5 dir/src/HelloWorld.java)
 [[ $md5 == '18b1517b17398ab3f35ced58444f85be' ]] || (echo "getMd5 failed" && exit 1)

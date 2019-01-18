@@ -242,7 +242,7 @@ function pack () {
    shift
    if [[ $# == 1 && -f $1 ]]; then
        case $file in
-          *.tar)     tar chvf $file $*  ;;
+          *.tar)     tar chf $file $*  ;;
           *.tar.bz2) tar chjf $file $*  ;;
           *.tbz2) tar chjf $file $*  ;;
           *.tar.gz)  tar chzf $file $*  ;;
@@ -254,7 +254,7 @@ function pack () {
        esac
    else
        case $file in
-          *.tar)     tar chvf $file $*  ;;
+          *.tar)     tar chf $file $*  ;;
           *.tar.bz2) tar chjf $file $*  ;;
           *.tbz2) tar chjf $file $*  ;;
           *.tar.gz)  tar chzf $file $*  ;;
