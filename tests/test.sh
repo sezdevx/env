@@ -41,6 +41,11 @@ d=$(fromEpoch 1543786787)
 t=$(toEpoch "$d")
 [[ $t == 1543786787 ]] || (echo "toEpoch failed" && exit 1)
 
+if hasCommand 'bc' ; then
+    r=$(c '12 * 5')
+    [[ $r == "60" ]] || (echo "c has failed" && exit 1)
+fi
+
 cd tmp
 ln -s ../dir/src/main main
 cd main
