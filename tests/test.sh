@@ -219,12 +219,59 @@ cd ..
 \rm -r tmp/*
 
 
-# findOverSize.sh
+# snapshot.sh
+cd tmp
+cp -r ../dir .
+
+cd dir
+snapshot.sh . > /dev/null 2>&1
+sleep 2
+snapshot.sh . > /dev/null 2>&1
+cd ..
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(ls dir_*))
+[[ ${#files[@]} == 2 ]] || (echo "snapshot.sh failed" && exit 1)
+IFS=$oldIFS
+
+snapshot.sh -d dir . > /dev/null 2>&1
+oldIFS=$IFS
+IFS=$'\n'
+files=($(ls dir_* 2> /dev/null))
+[[ ${#files[@]} == 0 ]] || (echo "snapshot.sh -d dir . failed" && exit 1)
+IFS=$oldIFS
+
+snapshot.sh -s dir . > /dev/null 2>&1
+oldIFS=$IFS
+IFS=$'\n'
+files=($(ls dir_*))
+[[ ${#files[@]} == 1 ]] || (echo "snapshot.sh -d dir . failed" && exit 1)
+IFS=$oldIFS
+file=${files[0]}
+
+\rm -r dir/
+[[ ! -e dir/src/main/com/java/ext/User.java ]] || (echo "rm -r dir failed" && exit 1)
+unpack $file
+[[ -e dir/src/main/com/java/ext/User.java ]] || (echo "snapshot.sh failed, missing file" && exit 1)
+
+cd ..
+\rm -r tmp/*
+
+# findOverSize.sh and largeDirs.sh
 cd tmp
 dd if=/dev/zero of=1k.file bs=1K count=1 2> /dev/null
 dd if=/dev/zero of=10k.file bs=1K count=10 2> /dev/null
 dd if=/dev/zero of=1m.file bs=1M count=1 2> /dev/null
 dd if=/dev/zero of=32m.file bs=32M count=1 2> /dev/null
+
+cd ../../
+oldIFS=$IFS
+IFS=$'\n'
+files=($(largeDirs.sh 2> /dev/null))
+[[ ${files[0]} =~ .*tests/tmp$ ]] || (echo "largeDirs.sh failed" && exit 1)
+IFS=$oldIFS
+cd tests/tmp
 
 oldIFS=$IFS
 IFS=$'\n'
@@ -261,7 +308,6 @@ cd ..
 
 
 
-
 if [[ $visualTests == 1 ]] ; then
     #setTitle and resetTitle
     setTitle "Hello World"
@@ -275,4 +321,13 @@ if [[ $visualTests == 1 ]] ; then
     printf "Did we open a url in your browser ? [Y/n] "
     read answer
     [[ $answer == 'y' || $answer == 'Y' || $answer == "" ]] || (echo "openResource failed" & exit 1)
+
+    echo "Showing environment info "
+    displayEnv.sh
+    echo ""
+    echo "--------------------------------------------------"
+    echo ""
+    echo "Showing directory tree "
+    dirTree.sh
+    echo "--------------------------------------------------"
 fi
