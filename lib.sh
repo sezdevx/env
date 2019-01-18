@@ -128,8 +128,7 @@ function findExecute()
 
 function findGrepExecute()
 {
-    eval find ./ \\\( -path .\/.git -o -path .\/.idea -o -path .\/.svn -o -path .\/.DS_Store \\\) -prune -o -type f -name \"$1\" -exec ${2:-ls} '{}' \\\+ ;
-    #eval find . -type f -name \"${1:-}\" -exec ${2:-ls} '{}' \\\; ;
+    eval find ./ \\\( -name .git -o -name .idea -o -name .svn -o -name .DS_Store \\\) -prune -o -type f -name \"$1\" -exec ${2:-ls} '{}' \\\+ ;
 }
 
 # find a file with pattern $2 in name and grep files that contain $1
@@ -151,7 +150,7 @@ function findGrep()
 # ex: findGrepi "envvar" "*.sh"
 function findGrepi()
 {
-    findGrepExecute "${2:-*}" "grep -H -i '${1:-}'"
+    findGrepExecute "${2:-*}" "grep -H -i \"${1:-}\""
 }
 
 # returns the md5 of a given file
