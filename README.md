@@ -288,8 +288,6 @@ crypt.sh decrypt < enc.txt > bigMesg.txt
 Displays general system information which includes
 
 * Platform: Cygwin, Linux, Mac, WSL (Linux on Windows)
-* env home directory
-* env data directory
 * Whether IP is up or not
 * Whether HTTP is working or not
 * Whether DNS is working or not
