@@ -31,6 +31,20 @@ mkdir tmp 2> /dev/null
 # hasCommand
 hasCommand "ls" || (echo "You don't have ls command" && exit 1)
 
+isAbsoluteDir "/etc/" || (echo "isAbsoluteDir failed" && exit 1)
+! isAbsoluteDir "etc/" || (echo "isAbsoluteDir failed" && exit 1)
+
+cd tmp
+ln -s ../dir/src/main main
+cd main
+
+realPath=$(getRealPath .)
+[[ $realPath =~ .*tmp\/main$ ]] || (echo "getRealPath failed" && exit 1)
+
+cd - > /dev/null
+\rm main
+cd ..
+
 # findFiles
 files=($(findFiles '*.java'))
 [[ ${#files[@]} == 3 ]] || (echo "findFiles '*.java' failed" && exit 1)
@@ -244,6 +258,8 @@ IFS=$oldIFS
 
 cd ..
 \rm -r tmp/*
+
+
 
 
 if [[ $visualTests == 1 ]] ; then
