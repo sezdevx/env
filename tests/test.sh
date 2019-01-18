@@ -31,8 +31,15 @@ mkdir tmp 2> /dev/null
 # hasCommand
 hasCommand "ls" || (echo "You don't have ls command" && exit 1)
 
+# isAbsoluteDir
 isAbsoluteDir "/etc/" || (echo "isAbsoluteDir failed" && exit 1)
 ! isAbsoluteDir "etc/" || (echo "isAbsoluteDir failed" && exit 1)
+
+# fromEpoch
+d=$(fromEpoch 1543786787)
+[[ $d =~ .*2018.* ]] || (echo "fromEpoch failed" && exit 1)
+t=$(toEpoch "$d")
+[[ $t == 1543786787 ]] || (echo "toEpoch failed" && exit 1)
 
 cd tmp
 ln -s ../dir/src/main main
