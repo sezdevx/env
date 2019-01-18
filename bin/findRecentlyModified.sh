@@ -24,6 +24,11 @@ elif [[ $time =~ ^[0-9]+[hH]$ ]]; then
 elif [[ $time =~ ^[0-9]+[mM]$ ]]; then
     ((length--))
     time=${time:0:length}
+elif [[ $time =~ ^[0-9]+$ ]]; then
+    time=$1
+else
+    echo 'Usage: findRecentlyModified 180 OR findRecentlyModified 180 "*.cc"'
+    exit 1
 fi
 
 (>&2 echo "Ignoring directories .git, idea")

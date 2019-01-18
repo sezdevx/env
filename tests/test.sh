@@ -97,6 +97,7 @@ unpack a.tar.gz
 files=($(findFiles '*.java'))
 [[ ${#files[@]} == 3 ]] || (echo "findFiles '*.java' failed" && exit 1)
 cd ..
+\rm -r tmp/*
 
 # md5
 md5=$(getMd5 dir/src/HelloWorld.java)
@@ -145,9 +146,105 @@ crypt.sh generate 32 > secretKey.txt
 crypt.sh encrypt secretKey.txt < User.java > User.java.enc
 crypt.sh decrypt secretKey.txt < User.java.enc > UserCopy.java
 diff User.java UserCopy.java || (echo "Failed: crypt.sh decrypt secretKey.txt < enc.txt > UserCopy.java" && exit 1)
-\rm User.java User2.java UserCopy.java secretKey.txt User.java.enc User.sig.file
-\rm privateKey.pem publicKey.pem shortMesg.txt shortMesg.dec.txt shortMesg.pub.enc.bin shortMesg.dec2.txt
 cd ..
+\rm -r tmp/*
+
+# findRecentlyModified.sh
+cd tmp
+cp ../dir/src/main/com/java/ext/User.java .
+touch User.java
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findRecentlyModified.sh 1 2> /dev/null))
+[[ ${#files[@]} == 1 ]] || (echo "findRecentlyModified.sh 1 failed" && exit 1)
+IFS=$oldIFS
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findRecentlyModified.sh 1m 2> /dev/null))
+[[ ${#files[@]} == 1 ]] || (echo "findRecentlyModified.sh 1m failed" && exit 1)
+IFS=$oldIFS
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findRecentlyModified.sh 1d 2> /dev/null))
+[[ ${#files[@]} == 1 ]] || (echo "findRecentlyModified.sh 1d failed" && exit 1)
+IFS=$oldIFS
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findRecentlyModified.sh 1h 2> /dev/null))
+[[ ${#files[@]} == 1 ]] || (echo "findRecentlyModified.sh 1h failed" && exit 1)
+IFS=$oldIFS
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findRecentlyModified.sh 1 '*.class' 2> /dev/null))
+[[ ${#files[@]} == 0 ]] || (echo "findRecentlyModified.sh 1 '*.class' failed" && exit 1)
+IFS=$oldIFS
+
+touch -mt 201006301525  User.java
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findRecentlyModified.sh 180 2> /dev/null))
+[[ ${#files[@]} == 0 ]] || (echo "findRecentlyModified.sh 180 failed" && exit 1)
+IFS=$oldIFS
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findRecentlyModified.sh 100000d 2> /dev/null))
+[[ ${#files[@]} == 1 ]] || (echo "findRecentlyModified.sh 100000d failed" && exit 1)
+IFS=$oldIFS
+
+files=($(findRecentlyModified.sh '*.java' 2> /dev/null))
+[[ $? != 0 ]] || (echo "findRecentlyModified '*.java' failed" && exit 1)
+
+cd ..
+\rm -r tmp/*
+
+
+# findOverSize.sh
+cd tmp
+dd if=/dev/zero of=1k.file bs=1K count=1 2> /dev/null
+dd if=/dev/zero of=10k.file bs=1K count=10 2> /dev/null
+dd if=/dev/zero of=1m.file bs=1M count=1 2> /dev/null
+dd if=/dev/zero of=32m.file bs=32M count=1 2> /dev/null
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findOverSize.sh 1 2> /dev/null))
+[[ ${#files[@]} == 4 ]] || (echo "findOverSize.sh 1 failed" && exit 1)
+IFS=$oldIFS
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findOverSize.sh 1 '*.log' 2> /dev/null))
+[[ ${#files[@]} == 0 ]] || (echo "findOverSize.sh 1 '*.log' failed" && exit 1)
+IFS=$oldIFS
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findOverSize.sh 1k 2> /dev/null))
+[[ ${#files[@]} == 3 ]] || (echo "findOverSize.sh 1k failed" && exit 1)
+IFS=$oldIFS
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findOverSize.sh 10k 2> /dev/null))
+[[ ${#files[@]} == 2 ]] || (echo "findOverSize.sh 1k failed" && exit 1)
+IFS=$oldIFS
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findOverSize.sh 1m 2> /dev/null))
+[[ ${#files[@]} == 1 ]] || (echo "findOverSize.sh 1m failed" && exit 1)
+IFS=$oldIFS
+
+cd ..
+\rm -r tmp/*
+
 
 if [[ $visualTests == 1 ]] ; then
     #setTitle and resetTitle
