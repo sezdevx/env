@@ -9,6 +9,7 @@ function cleanUp()
     \rm a.tgz
     \rm a.tbz2
     \rm a.tar
+    \rm -rf tmp
 }
 
 trap cleanUp EXIT
@@ -74,6 +75,14 @@ pack a.tgz dir/
 pack a.tbz2 dir/
 [[ -f a.tbz2 ]] || (echo "pack a.tbz2 dir failed" && exit 1)
 [[ $(peek a.tbz2 | grep "/main/com/java/ext/User.java") ]] || (echo "peek failed" && exit 1)
+
+mkdir tmp
+\cp a.tar.gz tmp
+cd tmp
+unpack a.tar.gz
+files=($(findFiles '*.java'))
+[[ ${#files[@]} == 3 ]] || (echo "findFiles '*.java' failed" && exit 1)
+cd ..
 
 
 md5=$(getMd5 dir/src/HelloWorld.java)
