@@ -4,6 +4,7 @@ function cleanUp()
 {
     \rm dir/.git/test.py
     \rm dir/.git/HelloWorld.java
+    \rm a.tar.gz
 }
 
 trap cleanUp EXIT
@@ -42,6 +43,10 @@ files=($(findGrep "Jane" '*.txt'))
 [[ ${#files[@]} == 1 ]] || (echo "findGrep 'Jane' '*.txt' failed" && exit 1)
 IFS=$oldIFS
 
+pack a.tar.gz dir/
+[[ -f a.tar.gz ]] || (echo "pack a.tar.gz dir failed" && exit 1)
+[[ $(peek a.tar.gz | grep "/main/com/java/ext/User.java") ]] || (echo "peek failed" && exit 1)
+
 md5=$(getMd5 dir/src/HelloWorld.java)
 [[ $md5 == '18b1517b17398ab3f35ced58444f85be' ]] || (echo "getMd5 failed" && exit 1)
 
@@ -73,4 +78,9 @@ if [[ 0 == 1 ]] ; then
     read answer
     [[ $answer == 'y' || $answer == 'Y' || $answer == "" ]] || (echo "setTitle failed" & exit 1)
     resetTitle
+
+    openResource "http://www.optoshare.com"
+    printf "Did we open a url in your browser ? [Y/n] "
+    read answer
+    [[ $answer == 'y' || $answer == 'Y' || $answer == "" ]] || (echo "openResource failed" & exit 1)
 fi
