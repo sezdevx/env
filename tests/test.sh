@@ -120,18 +120,18 @@ md5=$(getMd5 dir/src/HelloWorld.java)
 # prependPath
 hasThisPath=$(echo $PATH | tr ":" "\n" | while read i
 do
-    if [ "$i" = "$ENV_BASE_DIR/bin/test" ]; then
+    if [ "$i" = "$ENV_BASE_DIR/bin/for_test_only" ]; then
         printf "t"
         break;
     fi
 done
 echo "f"
 )
-[[ $hasThisPath == "f" ]] || (echo "$ENV_BASE_DIR/bin/test already exists" && exit 1)
-prependPath PATH "$ENV_BASE_DIR/bin/test"
+[[ $hasThisPath == "f" ]] || (echo "$ENV_BASE_DIR/bin/for_test_only already exists" && exit 1)
+prependPath PATH "$ENV_BASE_DIR/bin/for_test_only"
 hasThisPath=$(echo $PATH | tr ":" "\n" | while read i
 do
-    if [ "$i" = "$ENV_BASE_DIR/bin/test" ]; then
+    if [ "$i" = "$ENV_BASE_DIR/bin/for_test_only" ]; then
         printf "t"
         exit 0;
     fi
