@@ -228,24 +228,3 @@ if hasCommand 'git' ; then
 else
     PS1="\n\[$Blue\]\u\[$NC\][\t]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
 fi
-
-
-#    case $TERM in
-#        xterm*)
-#        # all these weird syntax just to satisfy the git bash
-#        PS1='\n'$"\[$Blue\]\u\[$NC\][\$(localTime)]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]"$'\n% '
-#            ;;
-#        *)
-#            PS1="\n\[$Blue\]\u\[$NC\][\$(localTime)]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
-#            ;;
-#    esac
-
-
-#    case $TERM in
-#        xterm*)
-#        PS1="\n\[$Blue\]\u\[$NC\][\t]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
-#            ;;
-#        *)
-#            PS1="\n\[$Blue\]\u\[$NC\][\t]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
-#            ;;
-#    esac
