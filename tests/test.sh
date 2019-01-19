@@ -272,8 +272,8 @@ cd ..
 
 # findOverSize.sh and largeDirs.sh
 cd tmp
-dd if=/dev/zero of=1k.file bs=1K count=1 2> /dev/null
-dd if=/dev/zero of=10k.file bs=1K count=10 2> /dev/null
+dd if=/dev/zero of=1k.file bs=1024 count=1 2> /dev/null
+dd if=/dev/zero of=10k.file bs=1024 count=10 2> /dev/null
 dd if=/dev/zero of=1m.file bs=1M count=1 2> /dev/null
 dd if=/dev/zero of=32m.file bs=32M count=1 2> /dev/null
 
