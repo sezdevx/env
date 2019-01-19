@@ -72,7 +72,6 @@ function computeDir()
 }
 
 
-echo $path
 computeDir "$path"
 
 IFS=$'\n' sorted=($(sort -rn <<<"${names[*]}"))
