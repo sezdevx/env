@@ -99,7 +99,7 @@ function setupDisplay ()
    export DISPLAY
 }
 
-# Setting X Title
+# resetting X Title
 function resetTitle()
 {
     export PROMPT_COMMAND='echo -ne "\033]0;${HOSTNAME}\007"'
