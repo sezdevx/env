@@ -38,8 +38,8 @@ isAbsoluteDir "/etc/" || (echo "isAbsoluteDir failed" && exit 1)
 # fromEpoch
 d=$(fromEpoch 1543786787)
 [[ $d =~ .*2018.* ]] || (echo "fromEpoch failed" && exit 1)
-#t=$(toEpoch "$d")
-#[[ $t == 1543786787 ]] || (echo "toEpoch failed" && exit 1)
+t=$(toEpoch $d)
+[[ $t == 1543786787 ]] || (echo "toEpoch failed" && exit 1)
 
 if hasCommand 'bc' ; then
     r=$(c '12 * 5')

@@ -330,12 +330,15 @@ function fromEpochF()
 function toEpoch()
 {
     local lastArg="${@: -1}"
-    if [[ $lastArg =~ [a-zA-z]+ && $lastArg != 'UTC' && "$ENV_PLATFORM" = "Mac" ]]; then
+    if [[ $lastArg =~ [a-zA-z]+ && $lastArg != 'UTC' && "$ENV_PLATFORM" == "Mac" ]]; then
         if [[ -z $LOCAL_TIME_ZONE ]]; then
             ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
             source "$ROOT_DIR/etc/settings.sh"
         fi
         TZ=$LOCAL_TIME_ZONE date -j -f "$ISO_DATE_FMT" "$*" +"%s"
+#    elif [[ "$ENV_PLATFORM" == "Mac" ]]; then
+#        echo "Here"
+#        TZ="%D %M %d %H:%M:%S %Z %Y" date -j -f "$ISO_DATE_FMT" "$*" +"%s"
     else
         toEpochF "$ISO_DATE_FMT" $*
     fi
