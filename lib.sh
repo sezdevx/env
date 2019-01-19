@@ -327,6 +327,7 @@ function fromEpochF()
 }
 
 # returns the epoch number for the given time
+# make sure the date is not quoted, otherwise it will throw an error
 function toEpoch()
 {
     local lastArg="${@: -1}"
@@ -336,9 +337,6 @@ function toEpoch()
             source "$ROOT_DIR/etc/settings.sh"
         fi
         TZ=$LOCAL_TIME_ZONE date -j -f "$ISO_DATE_FMT" "$*" +"%s"
-#    elif [[ "$ENV_PLATFORM" == "Mac" ]]; then
-#        echo "Here"
-#        TZ="%D %M %d %H:%M:%S %Z %Y" date -j -f "$ISO_DATE_FMT" "$*" +"%s"
     else
         toEpochF "$ISO_DATE_FMT" $*
     fi
