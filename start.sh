@@ -205,7 +205,7 @@ function git_prompt()
     fi
 }
 
-# [Display]
+# [Display, Colors, Title]
 setupDisplay;
 setupColors;
 resetTitle;

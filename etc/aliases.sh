@@ -62,7 +62,7 @@ alias mv='mv -i'
 #paths
 alias paths='echo -e ${PATH//:/\\n}'
 # programs
-alias emacs="emacs --load ${ENV_BASE_DIR}/etc/emacs/config.el"
+alias emacs="emacs -Q --load ${ENV_BASE_DIR}/etc/emacs/config.el"
 alias vim="vim -u ${ENV_BASE_DIR}/etc/vimrc"
 alias tmux="tmux -f $ENV_BASE_DIR/etc/tmux.conf"
 

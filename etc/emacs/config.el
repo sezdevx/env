@@ -96,7 +96,7 @@
 ;;Save some space exept when running in x window
 (cond
  ((string= "x" window-system) (menu-bar-mode t) )
- ( t (menu-bar-mode nil) )
+ ( t (menu-bar-mode 0) )
  )
 
 ;; WINDOWID is defined only when xterm is running remotely
@@ -194,7 +194,7 @@
 
 ;;(scroll-bar-mode 0)
 ;;(tool-bar-mode -1)
-(menu-bar-mode 0)
+
 
 
 
