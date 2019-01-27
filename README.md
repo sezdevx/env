@@ -39,8 +39,8 @@ If you pass it without quote, bash will expand *~ and pass the matching files to
 * **`ENV_PLATFORM`**: `Mac` or `Linux` or `Cygwin` or `WSL`
 
 ### Data directories and files
-* `~/.envData/bash`: history file and bashVars.sh file location
-* `~/.envData/emacs/backup`: emacs backup files location
+* `~/.env/data/bash`: history file
+* `~/.env/data/emacs/backup`: emacs backup files location
 
 ### Customizations
 Consider looking at the files below for customizations.

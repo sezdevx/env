@@ -1,8 +1,25 @@
 ;; -*- Mode: Emacs-Lisp -*-
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Public Domain                                           ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; where emacs backup and autosave files go
+(setq env_home_dir (getenv "ENV_HOME_DIR"))
+(defconst backups-dir
+  (concat
+   (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) 
+   "/data/emacs/backups")
+  )
+(defconst autosaves-dir
+  (concat
+   (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) 
+   "/data/emacs/autosaves")
+  )
+(when (not (file-exists-p backups-dir)) (make-directory backups-dir t))
+(when (not (file-exists-p autosaves-dir)) (make-directory autosaves-dir t))
+
+;;Setup ENV_BASE_DIR environment variable
+(or (stringp (getenv "ENV_BASE_DIR"))
+    (setenv "ENV_BASE_DIR" (expand-file-name "~/env")))
+(or (stringp (getenv "ENV_HOME_DIR"))
+    (setenv "ENV_HOME_DIR" (expand-file-name "~/.env")))
 
 ;;When moving to another screen using up or down arrow don't move the cursor
 ;;keep it either at the bottom when moving down or at the top when moving up
@@ -40,12 +57,6 @@
 ;;Constants
 (set-face-foreground 'font-lock-constant-face "green")
 
-;;Setup ENV_BASE_DIR environment variable
-(or (stringp (getenv "ENV_BASE_DIR"))
-    (setenv "ENV_BASE_DIR" (expand-file-name "~/.env")))
-(or (stringp (getenv "ENV_HOME_DIR"))
-    (setenv "ENV_HOME_DIR" (expand-file-name "~/.env")))
-
 ;;Abbreviations
 (setq-default abbrev-mode t)
 (read-abbrev-file (substitute-in-file-name "$ENV_BASE_DIR/etc/emacs/abbreviations.el") )
@@ -60,15 +71,14 @@
 (setq delete-old-versions t)
 (setq kept-new-versions 2)
 (setq kept-old-versions 1)
-(defvar backup-dir (substitute-in-file-name "$ENV_HOME_DIR/data/emacs"))
-(setq backup-directory-alist (list (cons ".*" backup-dir)))
+;(defvar backup-dir (substitute-in-file-name "$ENV_HOME_DIR/data/emacs/backups"))
+(setq backup-directory-alist (list (cons ".*" backups-dir)))
 
 ;;Setup Autosave Files
-(defvar autosave-dir (concat "/tmp/emacs_autosaves/" (user-login-name) "/"))
-(make-directory autosave-dir t)
+;(defvar autosave-dir (substitute-in-file-name "$ENV_HOME_DIR/data/emacs/autosaves"))
 (defun auto-save-file-name-p (filename)  (string-match "^#.*#$" (file-name-nondirectory filename)))
 (defun make-auto-save-file-name ()
-  (concat autosave-dir
+  (concat autosaves-dir
           (if buffer-file-name
               (concat "#" (file-name-nondirectory buffer-file-name) "#")
             (expand-file-name
@@ -194,8 +204,6 @@
 
 ;;(scroll-bar-mode 0)
 ;;(tool-bar-mode -1)
-
-
 
 
 ;; both are needed to prevent confirm appearing
