@@ -54,7 +54,7 @@ realPath=$(getRealPath .)
 [[ $realPath =~ .*tmp\/main$ ]] || (echo "getRealPath failed" && exit 1)
 
 cd - > /dev/null
-\rm main
+\rm -r main
 cd ..
 
 # findFiles
