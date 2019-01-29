@@ -8,3 +8,5 @@
 (set-face-foreground 'font-lock-type-face "#A9B7C6")
 (set-face-foreground 'font-lock-builtin-face "#BBB529")
 (set-face-foreground 'font-lock-constant-face "#6897BB")
+(set-background-color black)
+(set-foreground-color white)
