@@ -3,23 +3,19 @@
 ;; where emacs backup and autosave files go
 (setq env_home_dir (getenv "ENV_HOME_DIR"))
 (defconst backups-dir
-  (concat
-   (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) 
-   "/data/emacs/backups")
-  )
+  (concat (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env"))  "/data/emacs/backups"))
 (defconst autosaves-dir
   (concat
-   (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) 
-   "/data/emacs/autosaves")
-  )
-(when (not (file-exists-p backups-dir)) (make-directory backups-dir t))
-(when (not (file-exists-p autosaves-dir)) (make-directory autosaves-dir t))
+   (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) "/data/emacs/autosaves"))
+(defconst ext-dir
+  (concat
+   (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) "/ext/emacs"))
 
-;;Setup ENV_BASE_DIR environment variable
-(or (stringp (getenv "ENV_BASE_DIR"))
-    (setenv "ENV_BASE_DIR" (expand-file-name "~/env")))
-(or (stringp (getenv "ENV_HOME_DIR"))
-    (setenv "ENV_HOME_DIR" (expand-file-name "~/.env")))
+;; create backup and autosave directories if not created already
+(make-directory backups-dir t)
+(make-directory autosaves-dir t)
+
+(add-to-list 'load-path (concat ext-dir "/modules"))
 
 ;;When moving to another screen using up or down arrow don't move the cursor
 ;;keep it either at the bottom when moving down or at the top when moving up
@@ -27,43 +23,40 @@
 
 ;;Don't use tabs to indent lines, always use spaces
 (setq-default indent-tabs-mode nil)
+(setq tab-width 2)
+(setq-default tab-always-indent 'complete)
 
 ;; default to better frame titles
 (setq frame-title-format (concat  "%b - emacs@" system-name))
 
 ;;Highlight currentline
 ;;(global-hl-line-mode 1)
+(set-face-background 'region "blue3")
+(setq colors-file (expand-file-name "colors.el" ext-dir))
+(if (file-exists-p colors-file) (load-file colors-file)
+  (progn
+    ;; Sure this is not pretty, but works find in many different old settings
+    (set-face-foreground 'font-lock-string-face "Red")
+    (set-face-foreground 'font-lock-comment-face "Purple2")
+    (set-face-foreground 'font-lock-keyword-face "purple2")
+    (set-face-foreground 'font-lock-function-name-face "blue")
+    (set-face-foreground 'font-lock-variable-name-face "blue")
+    (set-face-foreground 'font-lock-warning-face "Yellow")
+    (set-face-foreground 'font-lock-type-face "red")
+    (set-face-foreground 'font-lock-builtin-face "cyan")
+    (set-face-foreground 'font-lock-constant-face "green")
+    ))
 
 ;;Turn on colors for all
 (global-font-lock-mode 1)
 
-;;Customize colors
-;;Strings
-(set-face-foreground 'font-lock-string-face "Red")
-;;Comment
-(set-face-foreground 'font-lock-comment-face "Purple2")
-;;Keywords
-(set-face-foreground 'font-lock-keyword-face "purple2")
-;;Keywords
-(set-face-foreground 'font-lock-function-name-face "blue")
-;;Variables
-(set-face-foreground 'font-lock-variable-name-face "blue")
-;;Variables
-(set-face-foreground 'font-lock-warning-face "Yellow")
-;;Types
-(set-face-foreground 'font-lock-type-face "red")
-;;Builtin ( preprocessors in c++ mode )
-(set-face-foreground 'font-lock-builtin-face "cyan")
-;;Constants
-(set-face-foreground 'font-lock-constant-face "green")
-
 ;;Abbreviations
-(setq-default abbrev-mode t)
-(read-abbrev-file (substitute-in-file-name "$ENV_BASE_DIR/etc/emacs/abbreviations.el") )
-(setq save-abbrevs t)
-
-;;Enable wheel-mouse scrolling
-;;(mouse-wheel-mode t)
+(setq abbrev-file (expand-file-name "abbreviations.el" ext-dir))
+(when (file-exists-p abbrev-file)
+  (progn
+    (setq-default abbrev-mode t)
+    (read-abbrev-file abbrev-file)
+    (setq save-abbrevs t)))
 
 ;;Setup Backup
 (setq make-backup-files t)
@@ -71,11 +64,9 @@
 (setq delete-old-versions t)
 (setq kept-new-versions 2)
 (setq kept-old-versions 1)
-;(defvar backup-dir (substitute-in-file-name "$ENV_HOME_DIR/data/emacs/backups"))
 (setq backup-directory-alist (list (cons ".*" backups-dir)))
 
 ;;Setup Autosave Files
-;(defvar autosave-dir (substitute-in-file-name "$ENV_HOME_DIR/data/emacs/autosaves"))
 (defun auto-save-file-name-p (filename)  (string-match "^#.*#$" (file-name-nondirectory filename)))
 (defun make-auto-save-file-name ()
   (concat autosaves-dir
@@ -85,14 +76,14 @@
              (concat "#%" (buffer-name) "#")))))
 
 
-;;Enable line and column numbering
+;; Enable line and column numbering
 (line-number-mode 1)
 (column-number-mode 1)
 
-;;Wrap lines when the cursor goes beyond the column limit
+;; Wrap lines when the cursor goes beyond the column limit
 (setq auto-fill-mode 1)
 
-;;Let the default mode be text mode
+;; Let the default mode be text mode
 (setq default-major-mode 'text-mode)
 
 ;;Fix Ctrl-Left and Ctrl-Right
@@ -108,15 +99,6 @@
  ((string= "x" window-system) (menu-bar-mode t) )
  ( t (menu-bar-mode 0) )
  )
-
-;; WINDOWID is defined only when xterm is running remotely
-;; We don't turn on normal-erase-is-backspace-mode because it causes emacs to reverse backspace
-;; when running under xterm
-;; So we turn on this mode only when running under a ssh terminal
-;;(cond
-;; ( (not (stringp (getenv "WINDOWID")))  (normal-erase-is-backspace-mode 1) )
-;; )
-
 
 ;;Programming
 ;;define C-c C-c as the key to save and compile
@@ -149,13 +131,15 @@
       (append '(("\\.cxx$"        .       c++-mode)
                 ("\\.CPP$"        .       c++-mode)
                 ("\\.cc$"         .       c++-mode)
+                ("\\.css$"        .       css-mode)
                 ("\\.cs$"         .       java-mode)
-                ("\\.tex$"         .      tex-mode)
+                ("\\.js$"         .       javascript-mode)
+                ("\\.tex$"        .       tex-mode)
                 ("\\.C$"          .       c++-mode)
                 ("\\.c$"          .       c-mode)
                 ("\\.h$"          .       c++-mode)
                 ("\\.java$"       .       java-mode)
-                ("\\.emacs$"       .       emacs-lisp-mode)
+                ("\\.emacs$"      .       emacs-lisp-mode)
                 ("\\.kan$"        .       java-mode)
                 ("\\.pl$"         .       cperl-mode)
                 ("\\.xml$"        .       xml-mode)
@@ -176,43 +160,34 @@
   ;; already default (abbrev-mode t)
   (c-set-style "ellemtel")
   (setq c-indent-level 4 )
+  (ggtags-mode 1)
   )
 (add-hook 'c++-mode-hook 'my-cc-c++-hook)
 
 
-;;Css Mode
-;;(if
-;;    (not (require 'css-mode nil 'noerror) )
-;;    (and
-;;        (file-exists-p (substitute-in-file-name "$ENV_HOME_DIR/ext/emacs/css-mode.el"))
-;;        (and
-;;         (load (substitute-in-file-name "$ENV_HOME_DIR/ext/emacs/css-mode.el") )
-;;         (add-to-list 'auto-mode-alist '("\\.css\\'" . css-mode))
-;;         )
-;;    )
-;;)
-
-
-(defun iwb ()
+(defun indent-whole-buffer ()
   "indent whole buffer"
   (interactive)
   (delete-trailing-whitespace)
   (indent-region (point-min) (point-max) nil)
   (untabify (point-min) (point-max)))
 
-(global-set-key (kbd "<f12>") 'iwb)
+(global-set-key (kbd "<f12>") 'indent-whole-buffer)
+(setq initial-scratch-message "")  ;; no need to show me what scratch is for
+(setq visible-bell t) ;; get rid of beeps
 
-;;(scroll-bar-mode 0)
-;;(tool-bar-mode -1)
 
+(require 'ggtags)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+              (ggtags-mode 1))))
 
-;; both are needed to prevent confirm appearing
-;(setq ido-use-filename-at-point 'guess)
-;(setq ido-create-new-buffer 'always)
-;(defadvice ido-switch-buffer (around no-confirmation activate)
-;  (let ((confirm-nonexistent-file-or-buffer nil))
-;    ad-do-it))
-;(setq ido-file-extensions-order '(".java" ".c" ".cc" ".h" ".txt" ".py" ".emacs" ".el" ".ini" ".js" ".css"))
-;(setq ido-ignore-extensions t)
-;(require 'ido)
-;(ido-mode t)
+(define-key ggtags-mode-map (kbd "C-c g s") 'ggtags-find-other-symbol)
+(define-key ggtags-mode-map (kbd "C-c g h") 'ggtags-view-tag-history)
+(define-key ggtags-mode-map (kbd "C-c g r") 'ggtags-find-reference)
+(define-key ggtags-mode-map (kbd "C-c g f") 'ggtags-find-file)
+(define-key ggtags-mode-map (kbd "C-c g c") 'ggtags-create-tags)
+(define-key ggtags-mode-map (kbd "C-c g u") 'ggtags-update-tags)
+
+(define-key ggtags-mode-map (kbd "M-,") 'pop-tag-mark)

@@ -8,10 +8,8 @@ export ENV_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export ENV_HOME_DIR=$HOME/.env # the env home directory
 
 [[ -d $ENV_HOME_DIR/ext/bash ]] || mkdir -p $ENV_HOME_DIR/ext/bash
-[[ -d $ENV_HOME_DIR/ext/emacs ]] || mkdir -p $ENV_HOME_DIR/ext/emacs
+[[ -d $ENV_HOME_DIR/ext/emacs/modules ]] || mkdir -p $ENV_HOME_DIR/ext/emacs/modules
 [[ -d $ENV_HOME_DIR/data/bash ]] || mkdir -p $ENV_HOME_DIR/data/bash
-#[[ -d $ENV_HOME_DIR/data/emacs/backups ]] || mkdir -p $ENV_HOME_DIR/data/emacs/backups
-#[[ -d $ENV_HOME_DIR/data/emacs/autosaves ]] || mkdir -p $ENV_HOME_DIR/data/emacs/autosaves
 [[ -d $ENV_HOME_DIR/data/vim ]] || mkdir -p $ENV_HOME_DIR/data/vim
 
 # [Custom Settings]
