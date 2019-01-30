@@ -69,7 +69,6 @@ alias tmux="tmux -f $ENV_BASE_DIR/etc/tmux.conf"
 alias localDate="TZ=$LOCAL_TIME_ZONE date  '+$ISO_DATE_FMT'"
 alias utcDate="TZ=Etc/UTC date -u '+$ISO_DATE_FMT'"
 alias localTime="TZ=$LOCAL_TIME_ZONE date  '+%H:%M:%S'"
-alias fixTerminal="export TERM=xterm-256color"
 
 
 # display pid too
