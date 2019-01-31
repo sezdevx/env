@@ -208,7 +208,7 @@ function git_prompt()
 # [Display, Colors, Title]
 setupDisplay;
 setupColors;
-resetTitle;
+# resetTitle;
 
 case "$-" in
     *i*) # interactive

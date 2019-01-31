@@ -14,6 +14,7 @@
 ;; create backup and autosave directories if not created already
 (make-directory backups-dir t)
 (make-directory autosaves-dir t)
+(setq user-emacs-directory ext-dir)
 
 (add-to-list 'load-path (concat ext-dir "/modules"))
 
@@ -44,8 +45,7 @@
     (set-face-foreground 'font-lock-warning-face "Yellow")
     (set-face-foreground 'font-lock-type-face "red")
     (set-face-foreground 'font-lock-builtin-face "cyan")
-    (set-face-foreground 'font-lock-constant-face "green")
-    ))
+    (set-face-foreground 'font-lock-constant-face "green")))
 
 ;;Turn on colors for all
 (global-font-lock-mode 1)
@@ -54,7 +54,7 @@
 (setq abbrev-file (expand-file-name "abbreviations.el" ext-dir))
 (when (file-exists-p abbrev-file)
   (progn
-    (setq-default abbrev-mode t)
+    ;;(setq-default abbrev-mode t)
     (read-abbrev-file abbrev-file)
     (setq save-abbrevs t)))
 
@@ -64,21 +64,32 @@
 (setq delete-old-versions t)
 (setq kept-new-versions 2)
 (setq kept-old-versions 1)
+
+;;Utf-8
+(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
+;; delete the selection once we type something
+(delete-selection-mode t)
+
 (setq backup-directory-alist (list (cons ".*" backups-dir)))
 
-;;Setup Autosave Files
+;; Setup Autosave Files
 (defun auto-save-file-name-p (filename)  (string-match "^#.*#$" (file-name-nondirectory filename)))
-(defun make-auto-save-file-name ()
-  (concat autosaves-dir
-          (if buffer-file-name
-              (concat "#" (file-name-nondirectory buffer-file-name) "#")
-            (expand-file-name
-             (concat "#%" (buffer-name) "#")))))
+ (defun make-auto-save-file-name ()
+   (concat autosaves-dir
+           (if buffer-file-name
+               (concat "#" (file-name-nondirectory buffer-file-name) "#")
+             (expand-file-name
+              (concat "#%" (buffer-name) "#")))))
 
 
 ;; Enable line and column numbering
-(line-number-mode 1)
-(column-number-mode 1)
+(line-number-mode t)
+(column-number-mode t)
 
 ;; Wrap lines when the cursor goes beyond the column limit
 (setq auto-fill-mode 1)
@@ -91,25 +102,10 @@
 (global-set-key "\M-[1;5D"    'backward-word) ; Ctrl+left    => backward word
 ;; Make sure backspace and delete works as expected
 
-;;(normal-erase-is-backspace-mode 1)
-
-
 ;;Save some space exept when running in x window
 (cond
  ((string= "x" window-system) (menu-bar-mode t) )
- ( t (menu-bar-mode 0) )
- )
-
-;;Programming
-;;define C-c C-c as the key to save and compile
-;;(defun my-save-and-compile ()
-;;  (interactive "")
-;;  (save-buffer 0)
-;;  (compile "make -k"))
-
-;;(define-key c++-mode-map "\C-c\C-c" 'my-save-and-compile)
-;;(define-key c-mode-map "\C-c\C-c" 'my-save-and-compile)
-
+ ( t (menu-bar-mode 0) ))
 
 ;;Use "%" to jump to the matching parenthesis.
 (defun goto-match-paren (arg)
@@ -123,6 +119,7 @@
 
 ;;Global Key Bindings
 (global-set-key "\C-x\C-c"      'goto-line)
+(global-set-key "\C-c\C-c"      'comment-line)
 (global-set-key "\C-x\C-v"      'find-tag)
 
 ;;Config File Extensions
@@ -157,13 +154,22 @@
 ;;Config C++
 (defun my-cc-c++-hook ()
   ;; already default (font-lock-mode t)
-  ;; already default (abbrev-mode t)
-  (c-set-style "ellemtel")
-  (setq c-indent-level 4 )
-  (ggtags-mode 1)
-  )
+  (abbrev-mode t)
+  ;; (c-set-style "ellemtel")
+  (c-set-style "linux")
+  (c-set-offset 'innamespace '0)
+  (c-set-offset 'inextern-lang '0)
+  (c-set-offset 'inline-open '0)
+  (c-set-offset 'label '*)
+  (c-set-offset 'case-label '*)
+  (c-set-offset 'access-label '/)
+  (setq c-basic-offset 4)
+  (setq tab-width 4)
+  (setq c-indent-level 4 ))
 (add-hook 'c++-mode-hook 'my-cc-c++-hook)
 
+;;(require 'google-c-style)
+;;(add-hook 'c-mode-common-hook 'google-set-c-style)
 
 (defun indent-whole-buffer ()
   "indent whole buffer"
@@ -172,8 +178,34 @@
   (indent-region (point-min) (point-max) nil)
   (untabify (point-min) (point-max)))
 
-(global-set-key (kbd "<f12>") 'indent-whole-buffer)
+;;(global-set-key (kbd "<f12>") 'indent-whole-buffer)
+(global-set-key (kbd "C-x C-i") 'indent-whole-buffer)
 (setq initial-scratch-message "")  ;; no need to show me what scratch is for
 (setq visible-bell t) ;; get rid of beeps
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
+
+;; (require 'package)
+;; (add-to-list 'package-archives
+;;             '("MELPA Stable" . "http://stable.melpa.org/packages/") t)
+;; (package-initialize)
+;; (package-refresh-contents)
+
+;; (package-install 'flycheck)
+
+;; (global-flycheck-mode)
+
+;;Programming
+;;define C-c C-c as the key to save and compile
+;;(defun my-save-and-compile ()
+;;  (interactive "")
+;;  (save-buffer 0)
+;;  (compile "make -k"))
+
+;;(define-key c++-mode-map "\C-c\C-c" 'my-save-and-compile)
+;;(define-key c-mode-map "\C-c\C-c" 'my-save-and-compile)
+
+;;(normal-erase-is-backspace-mode 1)
 
 
