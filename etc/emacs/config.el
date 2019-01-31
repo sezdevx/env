@@ -118,9 +118,10 @@
 
 
 ;;Global Key Bindings
-(global-set-key "\C-x\C-c"      'goto-line)
-(global-set-key "\C-c\C-c"      'comment-line)
-(global-set-key "\C-x\C-v"      'find-tag)
+(global-set-key "\C-x\C-c" 'goto-line)
+(global-set-key "\C-c\C-c" 'comment-line)
+(global-set-key "\C-x\C-v" 'find-tag)
+(global-set-key "\C-x\C-o" 'occur)
 
 ;;Config File Extensions
 ;;Auto-mode list
@@ -178,12 +179,12 @@
   (indent-region (point-min) (point-max) nil)
   (untabify (point-min) (point-max)))
 
-;;(global-set-key (kbd "<f12>") 'indent-whole-buffer)
 (global-set-key (kbd "C-x C-i") 'indent-whole-buffer)
 (setq initial-scratch-message "")  ;; no need to show me what scratch is for
 (setq visible-bell t) ;; get rid of beeps
 
 (fset 'yes-or-no-p 'y-or-n-p)
+
 
 
 ;; (require 'package)
