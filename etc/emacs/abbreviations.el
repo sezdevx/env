@@ -33,7 +33,7 @@
     ("pro" "protected" nil 0)    
     ("ve" "Vector" nil 0)
     ("ob" "Object" nil 0)
-    ("sy" "System.Console.WriteLine(" nil 0)
+    ("sy" "System.out.println(" nil 0)
     ("th" "throws" nil 0)
     ("ins" "instanceof" nil 0)
     ("el" "else" nil 0)

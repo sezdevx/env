@@ -5,18 +5,24 @@
 (defconst backups-dir
   (concat (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env"))  "/data/emacs/backups"))
 (defconst autosaves-dir
-  (concat
-   (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) "/data/emacs/autosaves"))
+  (concat (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) "/data/emacs/autosaves"))
 (defconst ext-dir
-  (concat
-   (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) "/ext/emacs"))
+  (concat (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) "/ext/emacs"))
+(defconst data-dir
+  (concat (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) "/data/emacs"))
+
+(setq user-settings-dir (concat ext-dir "/custom"))
+
+;; (setq is-mac (equal system-type 'darwin))
+;; (when is-mac ... do something)
 
 ;; create backup and autosave directories if not created already
 (make-directory backups-dir t)
 (make-directory autosaves-dir t)
-(setq user-emacs-directory ext-dir)
+(setq user-emacs-directory data-dir)
 
 (add-to-list 'load-path (concat ext-dir "/modules"))
+(add-to-list 'load-path (concat user-settings-dir))
 
 ;;When moving to another screen using up or down arrow don't move the cursor
 ;;keep it either at the bottom when moving down or at the top when moving up
@@ -24,28 +30,23 @@
 
 ;;Don't use tabs to indent lines, always use spaces
 (setq-default indent-tabs-mode nil)
-(setq tab-width 2)
+(setq tab-width 4)
 (setq-default tab-always-indent 'complete)
 
 ;; default to better frame titles
 (setq frame-title-format (concat  "%b - emacs@" system-name))
 
-;;Highlight currentline
-;;(global-hl-line-mode 1)
 (set-face-background 'region "blue3")
-(setq colors-file (expand-file-name "colors.el" ext-dir))
-(if (file-exists-p colors-file) (load-file colors-file)
-  (progn
-    ;; Sure this is not pretty, but works find in many different old settings
-    (set-face-foreground 'font-lock-string-face "Red")
-    (set-face-foreground 'font-lock-comment-face "Purple2")
-    (set-face-foreground 'font-lock-keyword-face "purple2")
-    (set-face-foreground 'font-lock-function-name-face "blue")
-    (set-face-foreground 'font-lock-variable-name-face "blue")
-    (set-face-foreground 'font-lock-warning-face "Yellow")
-    (set-face-foreground 'font-lock-type-face "red")
-    (set-face-foreground 'font-lock-builtin-face "cyan")
-    (set-face-foreground 'font-lock-constant-face "green")))
+(set-face-foreground 'font-lock-string-face "Red")
+(set-face-foreground 'font-lock-comment-face "Purple2")
+(set-face-foreground 'font-lock-keyword-face "purple2")
+(set-face-foreground 'font-lock-function-name-face "blue")
+(set-face-foreground 'font-lock-variable-name-face "blue")
+(set-face-foreground 'font-lock-warning-face "Yellow")
+(set-face-foreground 'font-lock-type-face "red")
+(set-face-foreground 'font-lock-builtin-face "cyan")
+(set-face-foreground 'font-lock-constant-face "green")
+
 
 ;;Turn on colors for all
 (global-font-lock-mode 1)
@@ -65,7 +66,7 @@
 (setq kept-new-versions 2)
 (setq kept-old-versions 1)
 
-;;Utf-8
+;;utf-8
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
@@ -79,12 +80,12 @@
 
 ;; Setup Autosave Files
 (defun auto-save-file-name-p (filename)  (string-match "^#.*#$" (file-name-nondirectory filename)))
- (defun make-auto-save-file-name ()
-   (concat autosaves-dir
-           (if buffer-file-name
-               (concat "#" (file-name-nondirectory buffer-file-name) "#")
-             (expand-file-name
-              (concat "#%" (buffer-name) "#")))))
+(defun make-auto-save-file-name ()
+  (concat autosaves-dir
+          (if buffer-file-name
+              (concat "#" (file-name-nondirectory buffer-file-name) "#")
+            (expand-file-name
+             (concat "#%" (buffer-name) "#")))))
 
 
 ;; Enable line and column numbering
@@ -118,10 +119,13 @@
 
 
 ;;Global Key Bindings
-(global-set-key "\C-x\C-c" 'goto-line)
-(global-set-key "\C-c\C-c" 'comment-line)
+(global-set-key "\C-x\C-g" 'goto-line)
+(global-set-key "\C-x\C-c" 'comment-line)
 (global-set-key "\C-x\C-v" 'find-tag)
 (global-set-key "\C-x\C-o" 'occur)
+(global-set-key "\C-x\C-r" 'run-current-file)
+(global-set-key "\C-c\C-c" 'compile)
+
 
 ;;Config File Extensions
 ;;Auto-mode list
@@ -153,24 +157,48 @@
               auto-mode-alist))
 
 ;;Config C++
+(require 'compile)
+
+(defconst mine/custom-c-style
+  '((c-tab-always-indent         . t)
+    (c-hanging-braces-alist      . ((substatement-open after)
+                                    (brace-list-open)))
+    (c-hanging-colons-alist      . ((member-init-intro before)
+                                    (inher-intro)
+                                    (case-label after)
+                                    (label after)
+                                    (access-label after)))
+    (c-cleanu-list               . (scope-operator
+                                    empty-defun-braces
+                                    defun-close-semi))
+    (c-offsets-alist             . ((arglist-close . c-lineup-arglist)
+                                    (substatement-open . 0)
+                                    (case-label        . +)
+                                    (block-open        . 0)
+                                    (access-label      . -)
+                                    (knr-argdecl-intro . -)))))
+
+(c-add-style "mine" mine/custom-c-style)
+
 (defun my-cc-c++-hook ()
-  ;; already default (font-lock-mode t)
   (abbrev-mode t)
-  ;; (c-set-style "ellemtel")
-  (c-set-style "linux")
-  (c-set-offset 'innamespace '0)
+  (c-set-style "mine")
+  (c-set-offset 'innamespace '2)
   (c-set-offset 'inextern-lang '0)
   (c-set-offset 'inline-open '0)
   (c-set-offset 'label '*)
   (c-set-offset 'case-label '*)
   (c-set-offset 'access-label '/)
-  (setq c-basic-offset 4)
-  (setq tab-width 4)
-  (setq c-indent-level 4 ))
+  (c-set-offset 'substatement-open 0)
+  (c-set-offset 'case-label 2)
+  (setq c-basic-offset 2)
+  (setq tab-width 2)
+  (setq c-indent-level 2 ))
+
+(add-hook 'c-mode-hook 'my-cc-c++-hook)
+(add-hook 'java-mode-hook 'my-cc-c++-hook)
 (add-hook 'c++-mode-hook 'my-cc-c++-hook)
 
-;;(require 'google-c-style)
-;;(add-hook 'c-mode-common-hook 'google-set-c-style)
 
 (defun indent-whole-buffer ()
   "indent whole buffer"
@@ -184,7 +212,32 @@
 (setq visible-bell t) ;; get rid of beeps
 
 (fset 'yes-or-no-p 'y-or-n-p)
+(setq message-log-max t)
 
+(setq completion-ignored-extensions
+      '(".o" ".elc" ".tgz" ".dvi" ".aux" ".ps" ".pyc" ".class" ".exe"))
+
+(when (file-exists-p user-settings-dir)
+  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
+
+;; (add-hook 'c++-mode-hook
+;;           (lambda ()
+;;             (unless (file-exists-p "Makefile")
+;;               (set (make-local-variable 'compile-command)
+;;                    ;; $(CC) -c -o $@ $(CPPFLAGS) $(CFLAGS) $<
+;;                    (let ((file (file-name-nondirectory buffer-file-name)))
+;;                      (format "%s -c -o %s.o %s %s %s"
+;;                              (or (getenv "CC") "gcc")
+;;                              (file-name-sans-extension file)
+;;                              (or (getenv "CPPFLAGS") "-DDEBUG=9")
+;;                              (or (getenv "CFLAGS") "-ansi -pedantic -Wall -g")
+;;                              file))))))
+;; (add-hook 'java-mode-hook
+;;           (lambda ()
+;;             (unless (file-exists-p "pom.xml")
+;;               (set (make-local-variable 'compile-command)
+;;                    (let ((file (file-name-nondirectory buffer-file-name)))
+;;                      (format "javac %s" file))))))
 
 
 ;; (require 'package)
@@ -197,16 +250,98 @@
 
 ;; (global-flycheck-mode)
 
-;;Programming
-;;define C-c C-c as the key to save and compile
-;;(defun my-save-and-compile ()
+;; define C-x C-c as the key to save and compile
+;; (defun my-save-and-compile ()
 ;;  (interactive "")
 ;;  (save-buffer 0)
 ;;  (compile "make -k"))
 
-;;(define-key c++-mode-map "\C-c\C-c" 'my-save-and-compile)
+;; ;;(define-key c++-mode-map "\C-c\C-c" 'my-save-and-compile)
 ;;(define-key c-mode-map "\C-c\C-c" 'my-save-and-compile)
 
 ;;(normal-erase-is-backspace-mode 1)
 
+;;Highlight currentline
+;;(global-hl-line-mode 1)
 
+(global-set-key [remap goto-line] 'goto-line-with-numbers)
+
+(defun goto-line-with-numbers ()
+  "Show line numbers while prompting for the number"
+  (interactive)
+  (unwind-protect
+      (progn
+        (linum-mode 1)
+        (goto-line (read-number "Goto line: ")))
+    (linum-mode -1)))
+
+(defvar run-current-file-before-hook nil "Hook for `run-current-file'. Before the file is run.")
+(defvar run-current-file-after-hook nil "Hook for `run-current-file'. After the file is run.")
+
+(defun run-current-file ()
+  "Execute the current file.
+From `http://ergoemacs.org/emacs/elisp_run_current_file.html'"
+  (interactive)
+  (let (
+        ($outputb "*run output*")
+        (resize-mini-windows nil)
+        ($suffix-map
+         ;; (‹extension› . ‹shell program name›)
+         `(
+           ("php" . "php")
+           ("pl" . "perl")
+           ("py" . "python")
+           ("rb" . "ruby")
+           ("sh" . "bash")
+           ("java" . "javac")
+           ))
+        $fname
+        $fSuffix
+        $prog-name
+        $cmd-str)
+    (when (not (buffer-file-name)) (save-buffer))
+    (when (buffer-modified-p) (save-buffer))
+    (setq $fname (buffer-file-name))
+    (setq $fSuffix (file-name-extension $fname))
+    (setq $prog-name (cdr (assoc $fSuffix $suffix-map)))
+    (setq $cmd-str (concat $prog-name " \""   $fname "\" &"))
+    (run-hooks 'run-current-file-before-hook)
+    (cond
+     ((string-equal $fSuffix "el")
+      (load $fname))
+     ((or (string-equal $fSuffix "ts") (string-equal $fSuffix "tsx"))
+      (if (fboundp 'ts-compile-file)
+          (progn
+            (ts-compile-file current-prefix-arg))
+        (if $prog-name
+            (progn
+              (message "Running")
+              (shell-command $cmd-str $outputb ))
+          (error "No recognized program file suffix for this file."))))
+     ((string-equal $fSuffix "java")
+      (progn
+        (shell-command (format "java %s" (file-name-sans-extension (file-name-nondirectory $fname))) $outputb )))
+     (t (if $prog-name
+            (progn
+              (message "Running")
+              (shell-command $cmd-str $outputb ))
+          (error "No recognized program file suffix for this file."))))
+    (run-hooks 'run-current-file-after-hook)))
+
+
+(defadvice kill-region (before slick-cut activate compile)
+  "When called interactively with no active region, kill a single line instead."
+  (interactive
+    (if mark-active (list (region-beginning) (region-end))
+      (list (line-beginning-position)
+        (line-beginning-position 2)))))
+
+(defadvice kill-ring-save (before slick-cut activate compile)
+  "When called interactively with no active region, copy a single line instead."
+  (interactive
+    (if mark-active (list (region-beginning) (region-end))
+      (list (line-beginning-position)
+        (line-beginning-position 2)))))
+
+(global-set-key "\C-l" 'kill-ring-save)
+(global-set-key "\C-k" 'kill-region)
