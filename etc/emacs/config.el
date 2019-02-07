@@ -108,6 +108,8 @@
  ((string= "x" window-system) (menu-bar-mode t) )
  ( t (menu-bar-mode 0) ))
 
+(tooltip-mode 0)
+
 ;;Use "%" to jump to the matching parenthesis.
 (defun goto-match-paren (arg)
   "Go to the matching parenthesis if on parenthesis, otherwise insert the character typed."
@@ -278,9 +280,9 @@
 (defvar run-current-file-before-hook nil "Hook for `run-current-file'. Before the file is run.")
 (defvar run-current-file-after-hook nil "Hook for `run-current-file'. After the file is run.")
 
+;; http://ergoemacs.org/emacs/elisp_run_current_file.html
 (defun run-current-file ()
-  "Execute the current file.
-From `http://ergoemacs.org/emacs/elisp_run_current_file.html'"
+  "Execute the current file."
   (interactive)
   (let (
         ($outputb "*run output*")
@@ -328,20 +330,26 @@ From `http://ergoemacs.org/emacs/elisp_run_current_file.html'"
           (error "No recognized program file suffix for this file."))))
     (run-hooks 'run-current-file-after-hook)))
 
+;; https://www.emacswiki.org/emacs/WholeLineOrRegion
+(put 'kill-ring-save 'interactive-form
+     '(interactive
+       (if (use-region-p)
+           (list (region-beginning) (region-end))
+         (list (line-beginning-position) (line-beginning-position 2)))))
+(put 'kill-region 'interactive-form
+     '(interactive
+       (if (use-region-p)
+           (list (region-beginning) (region-end))
+         (list (line-beginning-position) (line-beginning-position 2)))))
 
-(defadvice kill-region (before slick-cut activate compile)
-  "When called interactively with no active region, kill a single line instead."
-  (interactive
-    (if mark-active (list (region-beginning) (region-end))
-      (list (line-beginning-position)
-        (line-beginning-position 2)))))
 
-(defadvice kill-ring-save (before slick-cut activate compile)
-  "When called interactively with no active region, copy a single line instead."
-  (interactive
-    (if mark-active (list (region-beginning) (region-end))
-      (list (line-beginning-position)
-        (line-beginning-position 2)))))
+;; https://stackoverflow.com/questions/10266986/how-to-enable-show-paren-mode-only-for-el-files
+(show-paren-mode)
+(setq show-paren-mode ())              
+(defun show-paren-local-mode ()
+  (interactive)
+  (make-local-variable 'show-paren-mode)
+  (setq show-paren-mode t))
+(add-hook 'emacs-lisp-mode-hook 'show-paren-local-mode)
 
-(global-set-key "\C-l" 'kill-ring-save)
-(global-set-key "\C-k" 'kill-region)
+(global-set-key (kbd "M-/") 'hippie-expand)
