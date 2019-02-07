@@ -1,17 +1,13 @@
 ;; -*- Mode: Emacs-Lisp -*-
 
 ;; where emacs backup and autosave files go
-(setq env_home_dir (getenv "ENV_HOME_DIR"))
-(defconst backups-dir
-  (concat (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env"))  "/data/emacs/backups"))
-(defconst autosaves-dir
-  (concat (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) "/data/emacs/autosaves"))
-(defconst ext-dir
-  (concat (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) "/ext/emacs"))
-(defconst data-dir
-  (concat (if (stringp env_home_dir) env_home_dir (expand-file-name "~/.env")) "/data/emacs"))
-
-(setq user-settings-dir (concat ext-dir "/custom"))
+(setq env_home_dir (if (stringp (getenv "ENV_HOME_DIR")) (getenv "ENV_HOME_DIR") (expand-file-name "~/.env")))
+(setq env_base_dir (if (stringp (getenv "ENV_BASE_DIR")) (getenv "ENV_BASE_DIR") (expand-file-name "~/env")))
+(defconst backups-dir (concat env_home_dir "/data/emacs/backups"))
+(defconst autosaves-dir (concat env_home_dir "/data/emacs/autosaves"))
+(defconst ext-dir (concat env_home_dir "/etc/emacs"))
+(defconst data-dir (concat env_home_dir "/data/emacs"))
+(defconst base-emacs-dir (concat env_base_dir "/etc/emacs/custom"))
 
 ;; (setq is-mac (equal system-type 'darwin))
 ;; (when is-mac ... do something)
@@ -19,10 +15,9 @@
 ;; create backup and autosave directories if not created already
 (make-directory backups-dir t)
 (make-directory autosaves-dir t)
-(setq user-emacs-directory data-dir)
 
 (add-to-list 'load-path (concat ext-dir "/modules"))
-(add-to-list 'load-path (concat user-settings-dir))
+(add-to-list 'load-path (concat base-emacs-dir))
 
 ;;When moving to another screen using up or down arrow don't move the cursor
 ;;keep it either at the bottom when moving down or at the top when moving up
@@ -52,7 +47,7 @@
 (global-font-lock-mode 1)
 
 ;;Abbreviations
-(setq abbrev-file (expand-file-name "abbreviations.el" ext-dir))
+(setq abbrev-file (expand-file-name "abbreviations.el" (concat env_base_dir "/etc/emacs")))
 (when (file-exists-p abbrev-file)
   (progn
     ;;(setq-default abbrev-mode t)
@@ -219,8 +214,8 @@
 (setq completion-ignored-extensions
       '(".o" ".elc" ".tgz" ".dvi" ".aux" ".ps" ".pyc" ".class" ".exe"))
 
-(when (file-exists-p user-settings-dir)
-  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
+(when (file-exists-p base-emacs-dir)
+  (mapc 'load (directory-files base-emacs-dir nil "^[^#].*el$")))
 
 ;; (add-hook 'c++-mode-hook
 ;;           (lambda ()
