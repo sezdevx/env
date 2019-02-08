@@ -103,8 +103,6 @@
  ((string= "x" window-system) (menu-bar-mode t) )
  ( t (menu-bar-mode 0) ))
 
-(tooltip-mode 0)
-
 ;;Use "%" to jump to the matching parenthesis.
 (defun goto-match-paren (arg)
   "Go to the matching parenthesis if on parenthesis, otherwise insert the character typed."
@@ -121,7 +119,7 @@
 (global-set-key "\C-x\C-v" 'find-tag)
 (global-set-key "\C-x\C-o" 'occur)
 (global-set-key "\C-x\C-r" 'run-current-file)
-(global-set-key "\C-c\C-c" 'compile)
+(global-set-key "\C-c\C-c" 'compile)R
 
 
 ;;Config File Extensions
