@@ -10,3 +10,4 @@
 (set-face-foreground 'font-lock-constant-face "#6897BB")
 (set-background-color "black")
 (set-foreground-color "white")
+
