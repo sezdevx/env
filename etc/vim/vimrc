@@ -98,6 +98,8 @@ map <leader>tm :tabmove
 map <leader>nt :tabnext
 map <leader>pt :tabprevious
 
+source $ENV_BASE_DIR/etc/vim/colors.vim
+
 " Returns true if paste mode is enabled
 function! HasPaste()
     if &paste
@@ -127,3 +129,4 @@ function! <SID>BufcloseCloseIt()
         execute("bdelete! ".l:currentBufNum)
     endif
 endfunction
+
