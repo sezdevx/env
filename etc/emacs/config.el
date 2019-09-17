@@ -5,7 +5,7 @@
 (setq env_base_dir (if (stringp (getenv "ENV_BASE_DIR")) (getenv "ENV_BASE_DIR") (expand-file-name "~/env")))
 (defconst backups-dir (concat env_home_dir "/data/emacs/backups"))
 (defconst autosaves-dir (concat env_home_dir "/data/emacs/autosaves"))
-(defconst ext-dir (concat env_home_dir "/etc/emacs"))
+(defconst ext-dir (concat env_home_dir "/ext/emacs"))
 (defconst data-dir (concat env_home_dir "/data/emacs"))
 (defconst base-emacs-dir (concat env_base_dir "/etc/emacs/custom"))
 
@@ -346,3 +346,4 @@
 (add-hook 'emacs-lisp-mode-hook 'show-paren-local-mode)
 
 (global-set-key (kbd "M-/") 'hippie-expand)
+(require 'php-mode)

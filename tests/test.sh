@@ -2,15 +2,17 @@
 
 function cleanUp()
 {
-    \rm dir/.git/test.py
-    \rm dir/.git/HelloWorld.java
-    \rm -r dir/.git
-    \rm a.tar.gz
-    \rm a.tar.bz2
-    \rm a.tgz
-    \rm a.tbz2
-    \rm a.tar
+    echo "Running clean up"
+    \rm -f dir/.git/test.py
+    \rm -f dir/.git/HelloWorld.java
+    \rm -fr dir/.git
+    \rm -f a.tar.gz
+    \rm -f a.tar.bz2
+    \rm -f a.tgz
+    \rm -f a.tbz2
+    \rm -f a.tar
     \rm -rf tmp
+    echo "Finished clean up"
 }
 
 visualTests=${1:0}
