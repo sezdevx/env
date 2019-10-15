@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-if [[ -z $ENV_PLATFORM ]]; then
+if [[ -z "$ENV_PLATFORM" ]]; then
     echo "Should be only sourced from start.sh"
     exit 1
 fi
 
 # should be only sourced from start.sh
-case $ENV_PLATFORM in
+case "$ENV_PLATFORM" in
     Mac)
         alias ls='ls -FG'
         alias lsa='ls -AFGr'
