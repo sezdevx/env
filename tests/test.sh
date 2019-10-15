@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# run with ./test.sh 1 to run visual interactive tests too
+# visual tests are those that require user interaction
+
 function cleanUp()
 {
     echo "Running clean up"
