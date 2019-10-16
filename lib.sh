@@ -56,8 +56,17 @@ function getRealPath()
 }
 
 # tries to open a given path with the OS's default app
+# openResource home opens the github page for the env
+# openResource docs opens the documentation for the env
 function openResource()
 {
+    if [[ $# == 1 && "$1" == "home" ]]; then
+        shift # remove the first argument
+        set -- "$@" "https://github.com/sezdevx/env"
+    elif [[ $# == 1 && "$1" == "docs" ]]; then
+        shift # remove the first argument
+        set -- "$@" "https://github.com/sezdevx/env/blob/master/README.md"
+    fi
     if [[ "$ENV_PLATFORM" == "Mac" ]]; then
         open $*
     elif [[ "$ENV_PLATFORM" == "Cygwin" ]]; then

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ -z "$ENV_PLATFORM" ]]; then
-    echo "Should be only sourced from start.sh"
+    echo "No ENV_PLATFORM defined. Should be only sourced from start.sh"
     exit 1
 fi
 
@@ -40,6 +40,8 @@ alias edel="\rm *~; \rm .*~"
 
 # to reread this file from the shell
 alias reloadEnv=". $ENV_BASE_DIR/start.sh"
+# to update and reload env
+alias updateEnv="git pull && reloadEnv"
 
 # easier navigation
 alias cd..="cd .."
