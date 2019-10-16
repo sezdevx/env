@@ -166,7 +166,7 @@ if [ ! -t 1 ]; then
     Blue=""
 fi
 
-printf "%14s: $ENV_PLATFORM ($ENV_ARCH bit)\n" "System"
+printf "%14s: $NC $ENV_PLATFORM ($ENV_ARCH bit)\n" "System"
 
 if [ $IP4_UP = "true" ]; then
     if [ $DNS_UP = "true" ]; then

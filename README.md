@@ -28,6 +28,10 @@ findFiles `*~`
 If you pass it without quote, bash will expand *~ and pass the matching files to the function, not the
 '*~'.
 
+Notice that `/etc/profile` is likely to impact your bash environment.
+Other files that may impact your environment are `~/.profile`, `~/.bash_profile`,
+`~/.bash_login` and `~/.bashrc`.
+
 ### Environment variables
 * **`ENV_BASE_DIR`**: where this project resides
 * **`ENV_HOME_DIR`**: always defined as `~/.env`, but you can change it at `start.sh`
@@ -63,6 +67,7 @@ of platforms.
 * `lsa`: non-detailed list of files
 * `sane`: use it when your screen is messed up, can't see what you type
 * `reloadEnv`: reread the start.sh, so changes are reflected
+* `updateEnv`: updates the local env from github and rereads the start.sh
 * `..`: go one directory up
 * `dus`: how much current directory occupies in size
 * `duh`: this directory and its direct subdirectories reported
