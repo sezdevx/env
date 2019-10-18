@@ -189,7 +189,7 @@ fi
 printf "%14s: $NC $IP_ADDRESS $NC \n" "IP Address";
 printf "%14s: $NC ${MY_CLIENT_IP:-local} $NC \n" "SSH Client IP" ;
 
-printf "\n" ;
+printhr true true
 
 printf "%14s: $NC $DISTRO $DISTRO_VER $NC \n" "Distro" ;
 printf "%14s: $NC $CPU_COUNT x $CPU_MODEL $CPU_SPEED $NC \n" "CPU" ;
@@ -225,6 +225,6 @@ for (( i=0; i<${#FILESYSTEMS[@]}; i+=4 )); do
 done
 
 
-printf "\n"
+printhr true true
 printf "%14s: $NC $USER \n" "User";
 printf "%14s: `uptime` \n" "Uptime";

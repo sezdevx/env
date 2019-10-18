@@ -391,12 +391,20 @@ function bytesToDisplay
 }
 
 # prints a horizontal line depending on the size of the screen
+# if the first parameter is true, then a new line is printed before new line
+# if the second paramter is true, then an extra new line is printed after new line
 function printhr() {
     local line="---------------------------------------------------------------------------------------------------\
 -------------------------------------------------------------------------------------------------------------------\
 -------------------------------------------------------------------------------------------------------------------\
 -------------------------------------------------------------------------------------------------------------------"
 
+    if [[ $1 == "true" ]]; then
+        printf "\n"
+    fi
     printf "%s\n" "${line:0:${COLUMNS:-$(tput cols)}}"
+    if [[ $2 == "true" ]]; then
+        printf "\n"
+    fi
 }
 
