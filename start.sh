@@ -226,7 +226,7 @@ esac
 
 # [Prompt]
 if hasCommand 'git' ; then
-    PS1='\n'$"\[$Blue\]\u\[$NC\][\$(localTime)]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]"$'\n% '
+    PS1='\n'$"\[$Blue\][\$(localTime)]\[$NC\]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]"$'\n\$ '
 else
-    PS1="\n\[$Blue\]\u\[$NC\][\t]:\[$BlackBG\]\[$White\]\w \[$NC\]\n% "
+    PS1="\n\[$Blue\][\t]\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]\n\$ "
 fi
