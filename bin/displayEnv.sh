@@ -167,6 +167,9 @@ if [ ! -t 1 ]; then
 fi
 
 printf "%14s: $NC $ENV_PLATFORM ($ENV_ARCH bit)\n" "System"
+if [[ ! -z "${BASH_VERSION+x}" ]]; then
+    printf "%14s: $NC $BASH_VERSION \n" "Bash Version"
+fi
 
 if [ $IP4_UP = "true" ]; then
     if [ $DNS_UP = "true" ]; then
@@ -220,3 +223,8 @@ for (( i=0; i<${#FILESYSTEMS[@]}; i+=4 )); do
         printf "%14s: $NC $available $usePercentage%% %14s $NC \n" $mountPoint $fileSystemName;
     fi
 done
+
+
+printf "\n"
+printf "%14s: $NC $USER \n" "User";
+printf "%14s: `uptime` \n" "Uptime";

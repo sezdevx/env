@@ -57,16 +57,30 @@ function getRealPath()
 
 # tries to open a given path with the OS's default app
 # openResource home opens the github page for the env
-# openResource docs opens the documentation for the env
+# openResource [bash|awk|git|emacs|vim] opens the documentation for the corresponding program
 function openResource()
 {
+    # yes, I know if [[ $# == 1 ]]; then is more efficient
     if [[ $# == 1 && "$1" == "home" ]]; then
         shift # remove the first argument
         set -- "$@" "https://github.com/sezdevx/env"
-    elif [[ $# == 1 && "$1" == "docs" ]]; then
+    elif [[ $# == 1 && "$1" == "bash" ]]; then
+        shift
+        set -- "$@" "https://github.com/sezdevx/learn/blob/master/bash/readme.md"
+    elif [[ $# == 1 && "$1" == "vim" ]]; then
+        shift
+        set -- "$@" "https://github.com/sezdevx/learn/blob/master/vim/readme.md"
+    elif [[ $# == 1 && "$1" == "git" ]]; then
+        shift
+        set -- "$@" "https://github.com/sezdevx/learn/blob/master/git/readme.md"
+    elif [[ $# == 1 && "$1" == "emacs" ]]; then
+        shift
+        set -- "$@" "https://github.com/sezdevx/learn/blob/master/emacs/readme.md"
+    elif [[ $# == 1 && "$1" == "awk" ]]; then
         shift # remove the first argument
-        set -- "$@" "https://github.com/sezdevx/env/blob/master/README.md"
+        set -- "$@" "https://github.com/sezdevx/learn/blob/master/awk/readme.md"
     fi
+
     if [[ "$ENV_PLATFORM" == "Mac" ]]; then
         open $*
     elif [[ "$ENV_PLATFORM" == "Cygwin" ]]; then
