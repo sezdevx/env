@@ -312,6 +312,11 @@ It is primarily useful in mixed environments (e.g. with windows)
 where file permissions are messed up and need to be fixed.
 Notice that it sets shell files as executable.
 
+## Finding duplicates files recursively in a directory
+**findDuplicateFiles.sh** can be used to list all duplicate files in a given
+directory path. It does not remove them, so you can collect the output
+and remove them by another script if necessary.
+
 ## Managing simple bash variables
 **manageVars.sh** is used to manage variables in **$ENV_HOME_DIR/ext/bash/bashVars.sh** file.
 This file is a set of key value pairs where
