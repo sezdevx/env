@@ -306,6 +306,12 @@ Displays general system information which includes
 * Kernel version
 * For each file system available space and use percentage
 
+## Fixing permissions recursively in a directory
+**fixPermissions.sh** is used to fix file permissions for a given path.
+It is primarily useful in mixed environments (e.g. with windows)
+where file permissions are messed up and need to be fixed.
+Notice that it sets shell files as executable.
+
 ## Managing simple bash variables
 **manageVars.sh** is used to manage variables in **$ENV_HOME_DIR/ext/bash/bashVars.sh** file.
 This file is a set of key value pairs where
