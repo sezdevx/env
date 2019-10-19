@@ -6,7 +6,8 @@ find "$*" -type f -exec md5sum {} +  > allDuplicateFiles.tmp
 sort allDuplicateFiles.tmp | uniq -d -w 32 | awk '{$1=""; print $0}'
 \rm allDuplicateFiles.tmp
 
-# below is how to remove all files in a file named duplicates.tmp
+# collect the output in duplicates.tmp and use the code below
+# to remove all files
 #for f in $(cat duplicates.tmp) ; do
 #    rm "$f"
 #done
