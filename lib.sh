@@ -408,3 +408,8 @@ function printhr() {
     fi
 }
 
+
+function gitFinish() {
+    local CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+    git add . && git commit -m "$1" && git push origin "$CURRENT_BRANCH"
+}
