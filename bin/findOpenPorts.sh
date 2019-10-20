@@ -11,7 +11,7 @@ if [[ "$ENV_PLATFORM" == "Mac" ]]; then
         netstat -Watnlv | grep LISTEN
     fi
 else
-    if [ `command -v lsof` ]; then
+    if [ `command -v ss` ]; then
         sudo ss -tulpn
     elif [ `command -v lsof` ]; then
         sudo lsof -i -P -n | grep LISTEN
