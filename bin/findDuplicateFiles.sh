@@ -19,6 +19,6 @@ sort "$tmpFile" | uniq -d -w 32 | awk '{$1=""; print $0}'
 
 # collect the output in duplicates.tmp and use the code below
 # to remove all files
-#for f in $(cat duplicates.tmp) ; do
-#    rm "$f"
-#done
+# for f in $(cat duplicates.tmp) ; do
+#     rm "$f"
+# done
