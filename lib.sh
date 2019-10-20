@@ -408,8 +408,8 @@ function printhr() {
     fi
 }
 
-
+# gitCommit comment goes here
 function gitCommit() {
     local BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-    git add . && git commit -m "$1" && git push origin "$BRANCH"
+    git add . && git commit -m "$*" && git push origin "$BRANCH"
 }

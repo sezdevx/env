@@ -86,6 +86,7 @@ of platforms.
 * `responseHeaders`: shows reponse headers of a given url (only if curl is available)
 * `allHeaders`: shows all HTTP headers of a given url (only if curl is available)
 * `c`: calculate a mathematical expression
+* `gitCommit`: commits all changes to the current branch along with the required comment
 
 ## Files and directories
 
