@@ -319,6 +319,10 @@ directory path. It does not remove them, so you can collect the output
 and remove them by another script if necessary. A sample script code
 is provided in the script file.
 
+## Finding open ports locally
+**findOpenPorts.sh** can be used to list all ports where local programs
+are listening on.
+
 ## Managing simple bash variables
 **manageVars.sh** is used to manage variables in **$ENV_HOME_DIR/ext/bash/bashVars.sh** file.
 This file is a set of key value pairs where
