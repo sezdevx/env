@@ -6,16 +6,16 @@ source "$ROOT_DIR/../lib.sh"
 
 if [[ "$ENV_PLATFORM" == "Mac" ]]; then
     if [ `command -v lsof` ]; then
-        sudo lsof -i -P -n | grep LISTEN
+        sudo lsof -i -P -n
     elif [ `command -v netstat` ]; then
-        netstat -Watnlv | grep LISTEN
+        netstat -Watnlv
     fi
 else
     if [ `command -v ss` ]; then
         sudo ss -tulpn
     elif [ `command -v lsof` ]; then
-        sudo lsof -i -P -n | grep LISTEN
+        sudo lsof -i -P -n
     elif [ `command -v netstat` ]; then
-        netstat -Watnlv | grep LISTEN
+        netstat -Watnlv
     fi
 fi
