@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ENV_PLATFORM="Linux"
+source "$ROOT_DIR/../lib.sh"
+
 # finds all duplicate files in a given directory
 
 tmpFile=$(mktemp /tmp/dedup.XXXXXXXXX)
