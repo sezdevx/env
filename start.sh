@@ -16,8 +16,8 @@ export ENV_HOME_DIR=$HOME/.env # the env home directory
 [[ -f $ENV_HOME_DIR/ext/bash/bashVars.sh ]] && source $ENV_HOME_DIR/ext/bash/bashVars.sh
 source $ENV_BASE_DIR/etc/settings.sh
 source $ENV_BASE_DIR/lib.sh
-export ENV_PLATFORM
-export ENV_ARCH
+#export ENV_PLATFORM
+#export ENV_ARCH
 source $ENV_BASE_DIR/etc/aliases.sh
 [[ "$ENV_PLATFORM" == "Cygwin" ]] && export TERM=xterm-256color
 
