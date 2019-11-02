@@ -1,5 +1,7 @@
 " mostly from https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 
+set runtimepath+=$ENV_BASE_DIR/etc/vim/
+
 " unlimited undo
 set nocompatible
 
@@ -97,8 +99,8 @@ map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
 map <leader>nt :tabnext
 map <leader>pt :tabprevious
-nnoremap <Leader>ve :e $MYVIMRC<CR>
-nnoremap <Leader>vr :source $MYVIMRC<CR>
+nnoremap <leader>ve :e $ENV_BASE_DIR/etc/vim/vimrc<cr>
+nnoremap <leader>vr :source $ENV_BASE_DIR/etc/vim/vimrc<cr>
 
 source $ENV_BASE_DIR/etc/vim/colors.vim
 
