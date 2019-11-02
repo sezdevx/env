@@ -41,7 +41,7 @@ alias edel="\rm *~; \rm .*~"
 # to reread this file from the shell
 alias reloadEnv=". $ENV_BASE_DIR/start.sh"
 # to update and reload env
-alias updateEnv="git pull && reloadEnv"
+alias updateEnv="cd $ENV_BASE_DIR && git pull && reloadEnv; cd $OLDPWD"
 
 # easier navigation
 alias cd..="cd .."
