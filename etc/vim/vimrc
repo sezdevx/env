@@ -99,8 +99,8 @@ map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
 map <leader>nt :tabnext
 map <leader>pt :tabprevious
-nnoremap <leader>ve :e $ENV_BASE_DIR/etc/vim/vimrc<cr>
-nnoremap <leader>vr :source $ENV_BASE_DIR/etc/vim/vimrc<cr>
+nnoremap <leader>ev :e $ENV_BASE_DIR/etc/vim/vimrc<cr>
+nnoremap <leader>sv :source $ENV_BASE_DIR/etc/vim/vimrc<cr>
 
 source $ENV_BASE_DIR/etc/vim/colors.vim
 
