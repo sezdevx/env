@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # The default, in case we can't figure out the real local time zone
+LOCAL_TIME_ZONE="America/New_York"
 if [[ -z "${TZ}" ]]; then
     LOCAL_TIME_ZONE="Etc/UTC"
 elif [[ -z "${LOCAL_TIME_ZONE}" ]]; then

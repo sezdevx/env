@@ -355,7 +355,7 @@ function toEpoch()
 {
     local lastArg="${@: -1}"
     if [[ $lastArg =~ [a-zA-z]+ && $lastArg != 'UTC' && "$ENV_PLATFORM" == "Mac" ]]; then
-        if [[ -z $LOCAL_TIME_ZONE ]]; then
+        if [[ -z "$LOCAL_TIME_ZONE" ]]; then
             ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
             source "$ROOT_DIR/etc/settings.sh"
         fi

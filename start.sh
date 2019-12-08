@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 # included from ~/.bashrc or ~/.profile or ~/.bash_profile
 
-# unfortunately because of a bug I had to disable
-# set -u
+# unfortunately because of a bug in one of the environments I had to disable
+#set -u
+#set -x
+
 
 export ENV_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export ENV_HOME_DIR=$HOME/.env # the env home directory
