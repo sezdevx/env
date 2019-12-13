@@ -16,6 +16,7 @@ brew install emacs
   * Download all ttf files
   * Select all, open in font book and click on install 
 * [iTerm2](https://iterm2.com/downloads.html)
+  * `Preferences > Profile > Text` : Choose the best font
 * [Visual Studio Code](https://code.visualstudio.com/Download) 
 You might need to play with `System Preferences > Security and Privacy` settings
 to make it work 
@@ -31,8 +32,11 @@ to make it work
   * Up Right: Mission Control
   * Down Left: Desktop
   * Down Right: Launchpad
- 
+
+* `System Preferences > Dock > Position on screen`: Right
+*  `System Preferences > Dock > Automatically hide and show the Dock`: Check
 * `System Preferences > Security & Privacy > Require Password`: 5 seconds
+* `System Preferences > Security & Privacy > Firewall`: Turn on the firewall
 * `Finder Preferences > Advanced > When performaing a search > Search the Current Folder`
 
  
