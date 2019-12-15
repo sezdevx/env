@@ -20,6 +20,22 @@ brew install emacs
 * [Visual Studio Code](https://code.visualstudio.com/Download) 
 You might need to play with `System Preferences > Security and Privacy` settings
 to make it work 
+* [Maven Apache](https://maven.apache.org/)
+```shell script
+brew install maven
+```
+* [Git](https://git-scm.com/)
+```shell script
+xcode-select --install
+```
+* [MySQL](https://www.mysql.com/)
+```shell script
+brew install mysql
+mysql.server start
+mysql_secure_installation
+mysql -u root -p
+mysql.server stop
+```
 
 # Paid Stuff
 * [Office](https://www.office.com/)
@@ -35,7 +51,7 @@ to make it work
   * Down Right: Launchpad
 
 * `System Preferences > Dock > Position on screen`: Right
-*  `System Preferences > Dock > Automatically hide and show the Dock`: Check
+* `System Preferences > Dock > Automatically hide and show the Dock`: Check
 * `System Preferences > Security & Privacy > Require Password`: 5 seconds
 * `System Preferences > Security & Privacy > Firewall`: Turn on the firewall
 * `Finder Preferences > Advanced > When performaing a search > Search the Current Folder`
