@@ -4,8 +4,7 @@
 # unfortunately because of a bug in one of the environments I had to disable
 #set -u
 #set -x
-
-
+#export ENV_BASE_DIR="$( cd "$( dirname "${(%):-%N}" )" && pwd )"
 export ENV_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export ENV_HOME_DIR=$HOME/.env # the env home directory
 
@@ -38,10 +37,14 @@ export HISTFILE=$ENV_HOME_DIR/data/bash/history
 export HISTSIZE=10000
 export HISTIGNORE="&:bg:fg:lsl:lsll:lsa:ls:history:exit"
 export HISTCONTROL="ignoreboth"
-shopt -s histappend # append to the history file, rather than overwrite it
-shopt -s histreedit
-shopt -s histverify # allow me to edit the old command
-
+#if [[ $USING_ZSH ]]; then
+#    setopt APPEND_HISTORY # append to the history file, rather than overwrite it
+#    setopt HISTVERIFY # allow me to edit the old command
+#else
+    shopt -s histappend # append to the history file, rather than overwrite it
+    shopt -s histreedit
+    shopt -s histverify # allow me to edit the old command
+#fi
 # [Security]
 umask 022
 
@@ -214,6 +217,15 @@ setupDisplay;
 setupColors;
 # resetTitle;
 
+
+# [Prompt]
+#if [[ $USING_ZSH == 1 ]]; then
+#    PS1="%{%F{blue}%}%n%{%f%}@%{%F{blue}%}%m %{%F{yellow}%}%~ %{$%f%}%% "
+##    if hasCommand 'git' ; then
+##        PROMPT='\n'$"\[$Blue\][\$(localTime)]\[$NC\]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]"$'\n\$ '
+##    else
+##    fi
+#else
 case "$-" in
     *i*) # interactive
         # [Keyboard Bindings]
@@ -225,8 +237,6 @@ case "$-" in
     *) # non-interactive
         ;;
 esac
-
-# [Prompt]
 if hasCommand 'git' ; then
     PS1='\n'$"\[$Blue\][\$(localTime)]\[$NC\]\[$Red\]\$(git_prompt)\[$NC\]:\[$BlackBG\]\[$White\]\w \[$NC\]"$'\n\$ '
 else

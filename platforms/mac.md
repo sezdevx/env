@@ -36,6 +36,14 @@ mysql_secure_installation
 mysql -u root -p
 mysql.server stop
 ```
+* [bash](https://www.gnu.org/software/bash/)
+```shell script
+brew install bash
+sudo -s
+echo /usr/local/bin/bash >> /etc/shells
+exit
+chsh -s /usr/local/bin/bash
+```
 
 # Paid Stuff
 * [Office](https://www.office.com/)
