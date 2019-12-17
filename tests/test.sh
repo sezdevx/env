@@ -86,6 +86,19 @@ files=($(findGrep "Jane"))
 [[ ${#files[@]} == 5 ]] || (echo "findGrep 'Jane' failed" && exit 1)
 IFS=$oldIFS
 
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findDuplicateFiles.sh dir))
+[[ ${#files[@]} == 4 ]] || (echo "findDuplicateFiles.sh . failed" && exit 1)
+IFS=$oldIFS
+
+oldIFS=$IFS
+IFS=$'\n'
+files=($(findDuplicateFiles.sh))
+[[ ${#files[@]} == 4 ]] || (echo "findDuplicateFiles.sh . failed" && exit 1)
+IFS=$oldIFS
+
 oldIFS=$IFS
 IFS=$'\n'
 files=($(findGrep "Jane" '*.txt'))
@@ -339,6 +352,13 @@ if [[ $visualTests == 1 ]] ; then
     printf "Did we open a url in your browser ? [Y/n] "
     read answer
     [[ $answer == 'y' || $answer == 'Y' || $answer == "" ]] || (echo "openResource failed" & exit 1)
+
+    # open ports
+    echo "Finding open ports"
+    findOpenPorts.sh
+    printf "Press any key to continue "
+    read -n 1 -s -r -p "Press any key to continue "
+    printf "\n"
 
     echo "Showing environment info "
     displayEnv.sh
