@@ -13,6 +13,7 @@ function showHelp ()
     echo "-a varName: add or update varName with the varValue"
     echo "-d varName: delete the varName"
     echo "-l: lists all the varNames and their values"
+    echo "-s varName: show the value of the varName"
     exit 0
 }
 
@@ -21,19 +22,21 @@ function addVar ()
     local name=$1
     local value=$2
     if [[ -e $ENV_EXT_DIR/bash/bashVars.sh && -n "$(grep ${name}= $ENV_EXT_DIR/bash/bashVars.sh)" ]]; then
-        echo "Found $name in $ENV_EXT_DIR/bash/bashVars.sh, updating its value"
+        #echo "Found $name in $ENV_EXT_DIR/bash/bashVars.sh, updating its value"
         sed -i".bak" "/export $name=/d" $ENV_EXT_DIR/bash/bashVars.sh
     fi
     echo "export $name='$value'" >> $ENV_EXT_DIR/bash/bashVars.sh
+    #source $ENV_EXT_DIR/bash/bashVars.sh
 }
 
 function removeVar ()
 {
     local name=$1
     if [[ -e $ENV_EXT_DIR/bash/bashVars.sh && -n "$(grep ${name}= $ENV_EXT_DIR/bash/bashVars.sh)" ]]; then
-        echo "Removed $name in $ENV_EXT_DIR/bash/bashVars.sh"
+        #echo "Removed $name in $ENV_EXT_DIR/bash/bashVars.sh"
         sed -i".bak" "/export $name=/d" $ENV_EXT_DIR/bash/bashVars.sh
-        #unset local
+#        export $name=
+#        unset $name
     else
         echo "No such var: $name"
     fi
@@ -41,10 +44,16 @@ function removeVar ()
 
 function listVars ()
 {
-    if [ -e $ENV_EXT_DIR/bash/bashVars.sh ]; then
-        cat $ENV_EXT_DIR/bash/bashVars.sh
+    if [[ ! -z $1 ]]; then
+        if [ -e $ENV_EXT_DIR/bash/bashVars.sh ]; then
+            grep "^export $1="  $ENV_EXT_DIR/bash/bashVars.sh | cut -d= -f 2
+        fi
     else
-        echo "Empty List"
+        if [ -e $ENV_EXT_DIR/bash/bashVars.sh ]; then
+            cat $ENV_EXT_DIR/bash/bashVars.sh
+#        else
+#            echo "Empty List"
+        fi
     fi
 }
 
@@ -54,7 +63,7 @@ fi
 
 varName=""
 add=0
-while getopts "h?a:d:l" opt; do
+while getopts "h?a:d:ls:" opt; do
     case "$opt" in
     h|\?)
         showHelp
@@ -71,6 +80,10 @@ while getopts "h?a:d:l" opt; do
         listVars
         exit 0
         ;;
+    s)
+        listVars $OPTARG
+        exit 0
+        ;;
     esac
 done
 shift $(expr $OPTIND - 1 )
@@ -80,8 +93,7 @@ if [[ $add == 1 ]]; then
         echo "Missing varValue"
         exit 1
     fi
-    varValue=$1
-    addVar $varName "$varValue"
+    addVar $varName "$*"
 else
     removeVar $varName
 fi

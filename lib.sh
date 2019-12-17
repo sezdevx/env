@@ -19,6 +19,25 @@ fi
 
 ISO_DATE_FMT='%Y-%m-%d %H:%M:%S %Z'
 
+function manageVars()
+{
+    manageVars.sh $*
+    if [[ $# > 1 ]]; then
+        name=$2
+        case "$1" in
+        -d)
+            unset $name
+            export $name=""
+            ;;
+        -a)
+            shift;
+            shift;
+            export $name="$*"
+            ;;
+        esac
+    fi
+}
+
 # it returns 0, if command exists, 1 otherwise
 # it may appear to be illogical, but the idea is that if hasCommand 'command'
 # would execute if the system has the command, in such cases, we have to return 0

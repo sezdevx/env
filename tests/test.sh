@@ -5,7 +5,6 @@
 
 function cleanUp()
 {
-    echo "Running clean up"
     \rm -f dir/.git/test.py
     \rm -f dir/.git/HelloWorld.java
     \rm -fr dir/.git
@@ -15,7 +14,6 @@ function cleanUp()
     \rm -f a.tbz2
     \rm -f a.tar
     \rm -rf tmp
-    echo "Finished clean up"
 }
 
 visualTests=${1:0}
@@ -337,6 +335,19 @@ IFS=$oldIFS
 cd ..
 \rm -r tmp/*
 
+#manageVars.sh
+manageVars -a test_manage_vars "Testing Manage Vars"
+if [[ $test_manage_vars != "Testing Manage Vars" ]]; then
+    echo "manageVars.sh failed adding" && exit 1
+fi
+result=$(manageVars.sh -s test_manage_vars)
+if [[ $result != "'Testing Manage Vars'" ]]; then
+    echo "manageVars.sh failed showing" && exit 1
+fi
+manageVars -d test_manage_vars
+if [[ $test_manage_vars == "Testing Manage Vars" ]]; then
+    echo "manageVars.sh failed removing" && exit 1
+fi
 
 
 if [[ $visualTests == 1 ]] ; then
