@@ -346,4 +346,6 @@
 (add-hook 'emacs-lisp-mode-hook 'show-paren-local-mode)
 
 (global-set-key (kbd "M-/") 'hippie-expand)
-(require 'php-mode)
+(when (file-exists-p (concat ext-dir "/modules/php-mode.el"))
+    (load (concat ext-dir "/modules/php-mode.el")))
+;;(require 'php-mode)
