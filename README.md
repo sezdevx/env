@@ -325,7 +325,7 @@ is provided in the script file.
 are listening on.
 
 ## Managing simple bash variables
-**manageVars.sh** is used to manage variables in **$ENV_HOME_DIR/ext/bash/bashVars.sh** file.
+**manageVars** is used to manage variables in **$ENV_HOME_DIR/ext/bash/bashVars.sh** file.
 This file is a set of key value pairs where
 each key is a variable exported by default. For example, say there is a long host name for a dev
 machine you regularly use. Instead of typing the host name everytime, you can set dev to this
@@ -335,6 +335,20 @@ set dev to the machine's host name. This file is automatically included in each 
 * `-l`: to list all variable names and their values
 * `-a varName 'varValue'`: to add the given varName with the varValue
 * `-d varName`: to delete the varName
+* `-s varName`: to show the value of the varName
+
+```shell script
+echo $testing
+
+manageVars -a testing This is a test
+echo $testing
+This is a test
+manageVars -d testing
+echo $testing
+
+manageVars -s testing
+
+```
 
 **Keep the var names and var values simple**
 
