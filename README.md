@@ -24,6 +24,7 @@ you need to include the following in your `~/.profile` or `~/.bashrc` files:
 **When passing parameters to library functions make sure that you quote them**. For example
 ```bash
 findFiles `*~`
+# instead of findFiles *~
 ```
 If you pass it without quote, bash will expand *~ and pass the matching files to the function, not the
 '*~'.
