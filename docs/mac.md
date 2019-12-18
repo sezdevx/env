@@ -21,6 +21,13 @@ chsh -s /usr/local/bin/bash
 brew install emacs
 ```
 
+* [Python](https://www.python.org/)
+```shell script
+brew install python
+# --user is important, otherwise it installs as system wide
+pip3 install moduleName --user
+```
+
 * [Java](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
 * [Intellij Idea IDE](https://www.jetbrains.com/idea/download/#section=mac)
@@ -33,10 +40,12 @@ brew install emacs
 
 * [iTerm2](https://iterm2.com/downloads.html)
   * `Preferences > Profile > Text` : Choose the best font
+  * `Preferences > Profile > Colors > Smart box cursor` : Check
 
 * [Visual Studio Code](https://code.visualstudio.com/Download) 
 You might need to play with `System Preferences > Security and Privacy` settings
 to make it work 
+  * `Preferences > Settings > telemetry`: Uncheck all
 
 * [Maven Apache](https://maven.apache.org/)
 ```shell script
@@ -71,28 +80,7 @@ cd ..
 \rm -fr php-mode
 ```
 
-# Paid Stuff
-* [Office](https://www.office.com/)
-
-* [1Password](https://1password.com/)
-
-* [Adobe Creative Cloud Photography](https://www.adobe.com/creativecloud.html)
-
-# Customizations
-* Change fonts to Consolas or Fire Coda and set a comfortable font size for eachd developer application
-* `System Preferences > Mission Control > Hot Corners`: 
-  * Up Left: Start Screen Saver
-  * Up Right: Mission Control
-  * Down Left: Desktop
-  * Down Right: Launchpad
-
-* `System Preferences > Dock > Position on screen`: Right
-* `System Preferences > Dock > Automatically hide and show the Dock`: Check
-* `System Preferences > Security & Privacy > Require Password`: 5 seconds
-* `System Preferences > Security & Privacy > Firewall`: Turn on the firewall
-* `Finder Preferences > Advanced > When performaing a search > Search the Current Folder`
-
-* [Apache](https://httpd.apache.org/)
+* [Apache](https://httpd.apache.org/) Already installed on mac
 ```shell script
 # starts apache server
 apachectl start
@@ -102,6 +90,32 @@ cd /etc/apache2/
 # stops apache server
 apachectl stop
 ```
+
+# Paid Stuff
+* [Office](https://www.office.com/)
+
+* [1Password](https://1password.com/)
+
+* [Adobe Creative Cloud Photography](https://www.adobe.com/creativecloud.html)
+
+## Customizations
+* [How to setup an Apple Mac for Software Development](configuring-a-user-accounthttps://www.stuartellis.name/articles/mac-setup/)
+* Change fonts to Consolas or Fire Coda and set a comfortable font size for eachd developer application
+* `System Preferences > Mission Control > Hot Corners`: 
+  * Up Left: Start Screen Saver
+  * Up Right: Mission Control
+  * Down Left: Desktop
+  * Down Right: Launchpad
+* `System Preferences > Dock > Position on screen`: Right
+* `System Preferences > Dock > Automatically hide and show the Dock`: Check
+* `System Preferences > Security & Privacy > Require Password`: 5 seconds
+* `System Preferences > Security & Privacy > Firewall`: Turn on the firewall
+* `Finder Preferences > Advanced > When performaing a search > Search the Current Folder`
+* `System Preferences > Trackpad > Tap to Click`: Check
+* `System Preferences > Accessibility > Pointer Control > Trackpad Options > Enable Dragging`: Check
+
+
+
 
 
 
