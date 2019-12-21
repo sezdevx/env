@@ -119,7 +119,34 @@
 (global-set-key "\C-x\C-v" 'find-tag)
 (global-set-key "\C-x\C-o" 'occur)
 (global-set-key "\C-x\C-r" 'run-current-file)
+(global-set-key "\C-c+" 'v-resize)
+(global-set-key "\C-c|" 'h-resize)
 ;;(global-set-key "\C-c\C-c" 'compile)
+
+
+;; from https://www.emacswiki.org/emacs/WindowResize
+(defun v-resize (key)
+  "interactively resize the window"
+  (interactive "cHit +/- to enlarge/shrink")
+  (cond
+   ((eq key (string-to-char "+"))
+    (enlarge-window 1)
+    (call-interactively 'v-resize))
+   ((eq key (string-to-char "-"))
+    (enlarge-window -1)
+    (call-interactively 'v-resize))
+   (t (push key unread-command-events))))
+(defun h-resize (key)
+  "interactively resize the window"
+  (interactive "cHit +/- to enlarge/shrink")
+  (cond
+   ((eq key (string-to-char "+"))
+    (enlarge-window-horizontally 1)
+    (call-interactively 'h-resize))
+   ((eq key (string-to-char "-"))
+    (enlarge-window-horizontally -1)
+    (call-interactively 'h-resize))
+   (t (push key unread-command-events))))
 
 
 ;;Config File Extensions
@@ -145,6 +172,7 @@
                 ("make_[a-z]*$"   .       makefile-mode)
                 ("Make_[a-z]*$"   .       makefile-mode)
                 ("\\.txt$"        .       text-mode)
+                ("\\.md$"         .       markdown-mode)
                 ("\\.php$"        .       php-mode)
                 ("\\.inc$"        .       php-mode)
                 ("\\.html$"       .       html-mode)
@@ -233,17 +261,6 @@
 ;;               (set (make-local-variable 'compile-command)
 ;;                    (let ((file (file-name-nondirectory buffer-file-name)))
 ;;                      (format "javac %s" file))))))
-
-
-;; (require 'package)
-;; (add-to-list 'package-archives
-;;             '("MELPA Stable" . "http://stable.melpa.org/packages/") t)
-;; (package-initialize)
-;; (package-refresh-contents)
-
-;; (package-install 'flycheck)
-
-;; (global-flycheck-mode)
 
 ;; define C-x C-c as the key to save and compile
 ;; (defun my-save-and-compile ()
@@ -338,7 +355,7 @@
 
 ;; https://stackoverflow.com/questions/10266986/how-to-enable-show-paren-mode-only-for-el-files
 (show-paren-mode)
-(setq show-paren-mode ())              
+(setq show-paren-mode ())
 (defun show-paren-local-mode ()
   (interactive)
   (make-local-variable 'show-paren-mode)
@@ -347,6 +364,16 @@
 
 (global-set-key (kbd "M-/") 'hippie-expand)
 (when (file-exists-p (concat ext-dir "/modules/php-mode.el"))
-    (load (concat ext-dir "/modules/php-mode.el")))
-;;(require 'php-mode)
+  (load (concat ext-dir "/modules/php-mode.el")))
+(when (file-exists-p (concat ext-dir "/modules/markdown-mode.el"))
+  (load (concat ext-dir "/modules/markdown-mode.el")))
 
+;; slows down emacs startup
+;;(when (>= emacs-major-version 24)
+;;  (require 'package)
+;;  (add-to-list
+;;   'package-archives
+;;   '("MELPA" . "https://melpa.org/packages/") t)
+;;  (package-initialize)
+;;  (package-refresh-contents)
+;;  )

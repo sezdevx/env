@@ -71,13 +71,19 @@ mysql.server stop
 brew install tmux
 ```
 
-* [php-mode](https://github.com/emacs-php/php-mode)
+* [Emacs php-mode](https://github.com/emacs-php/php-mode)
 ```shell script
 git clone https://github.com/emacs-php/php-mode.git
 cd php-mode
 cp *.el ~/.env/ext/emacs/modules
 cd ..
 \rm -fr php-mode
+```
+
+* [Emacs markdown-mode](https://jblevins.org/projects/markdown-mode/rev-2-3)
+```shell script
+download https://jblevins.org/projects/markdown-mode/markdown-mode.el
+mv markdown-mode.el ~/.env/ext/emacs/modules
 ```
 
 * [Apache](https://httpd.apache.org/) Already installed on mac
