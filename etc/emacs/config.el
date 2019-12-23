@@ -5,7 +5,7 @@
 (setq env_base_dir (if (stringp (getenv "ENV_BASE_DIR")) (getenv "ENV_BASE_DIR") (expand-file-name "~/env")))
 (defconst backups-dir (concat env_home_dir "/data/emacs/backups"))
 (defconst autosaves-dir (concat env_home_dir "/data/emacs/autosaves"))
-(defconst ext-dir (concat env_home_dir "/ext/emacs"))
+(defconst ext-modules-dir (concat env_home_dir "/ext/emacs/modules"))
 (defconst data-dir (concat env_home_dir "/data/emacs"))
 (defconst base-emacs-dir (concat env_base_dir "/etc/emacs/custom"))
 
@@ -16,8 +16,8 @@
 (make-directory backups-dir t)
 (make-directory autosaves-dir t)
 
-(add-to-list 'load-path (concat ext-dir "/modules"))
 (add-to-list 'load-path (concat base-emacs-dir))
+(add-to-list 'load-path ext-modules-dir)
 
 ;;When moving to another screen using up or down arrow don't move the cursor
 ;;keep it either at the bottom when moving down or at the top when moving up
@@ -31,16 +31,49 @@
 ;; default to better frame titles
 (setq frame-title-format (concat  "%b - emacs@" system-name))
 
-(set-face-background 'region "blue3")
-(set-face-foreground 'font-lock-string-face "Red")
-(set-face-foreground 'font-lock-comment-face "Purple2")
-(set-face-foreground 'font-lock-keyword-face "purple2")
-(set-face-foreground 'font-lock-function-name-face "blue")
-(set-face-foreground 'font-lock-variable-name-face "blue")
-(set-face-foreground 'font-lock-warning-face "Yellow")
-(set-face-foreground 'font-lock-type-face "red")
-(set-face-foreground 'font-lock-builtin-face "cyan")
-(set-face-foreground 'font-lock-constant-face "green")
+(defun set-light-colors ()
+    (set-face-background 'region "blue3")
+  (set-face-foreground 'font-lock-string-face "Red")
+  (set-face-foreground 'font-lock-comment-face "Purple2")
+  (set-face-foreground 'font-lock-keyword-face "purple2")
+  (set-face-foreground 'font-lock-function-name-face "blue")
+  (set-face-foreground 'font-lock-variable-name-face "blue")
+  (set-face-foreground 'font-lock-warning-face "Yellow")
+  (set-face-foreground 'font-lock-type-face "red")
+  (set-face-foreground 'font-lock-builtin-face "cyan")
+  (set-face-foreground 'font-lock-constant-face "green")
+  (set-background-color "#FFFFFF")
+  (set-foreground-color "black")
+  (set-cursor-color "black")
+  )
+(defun set-dark-colors ()
+  ;;Customize colors (To see the font lock applying to a point Ctrl-u Ctrl-x =)
+  (set-face-foreground 'font-lock-string-face "#76CB58")
+  (set-face-foreground 'font-lock-comment-face "#629755")
+  (set-face-foreground 'font-lock-keyword-face "#CC7832")
+  (set-face-foreground 'font-lock-function-name-face "#3E7EFF")
+  (set-face-foreground 'font-lock-variable-name-face "#FFC66D")
+  (set-face-foreground 'font-lock-warning-face "#FFC66D")
+  (set-face-foreground 'font-lock-type-face "#A9B7C6")
+  (set-face-foreground 'font-lock-builtin-face "#BBB529")
+  (set-face-foreground 'font-lock-constant-face "#6897BB")
+  (set-background-color "black")
+  (set-foreground-color "#FFFFFF")
+  (set-cursor-color "#FFFFFF")
+  )
+
+(setenv "TZ" (getenv "LOCAL_TIME_ZONE"))
+
+(defun set-current-theme ()
+  (setq hour 
+        (string-to-number 
+         (substring (current-time-string) 11 13)))
+  (if (member hour (number-sequence 6 18))
+      ;;(set-light-colors)
+      (set-dark-colors)    
+    (set-dark-colors)
+    ))
+(run-with-timer 0 3600 'set-current-theme)
 
 
 ;;Turn on colors for all
@@ -93,7 +126,7 @@
 ;; Let the default mode be text mode
 (setq default-major-mode 'text-mode)
 
-;;Fix Ctrl-Left and Ctrl-Right
+;; Fix Ctrl-Left and Ctrl-Right (Opion-left and Option-right on macs)
 (global-set-key "\M-[1;5C"    'forward-word) ; Ctrl+right   => forward word
 (global-set-key "\M-[1;5D"    'backward-word) ; Ctrl+left    => backward word
 ;; Make sure backspace and delete works as expected
@@ -240,8 +273,9 @@
 (setq completion-ignored-extensions
       '(".o" ".elc" ".tgz" ".dvi" ".aux" ".ps" ".pyc" ".class" ".exe"))
 
-(when (file-exists-p base-emacs-dir)
-  (mapc 'load (directory-files base-emacs-dir nil "^[^#].*el$")))
+;;(when (file-exists-p base-emacs-dir)
+;;  (mapc 'load (directory-files base-emacs-dir nil "^[^#].*el$")))
+
 
 ;; (add-hook 'c++-mode-hook
 ;;           (lambda ()
@@ -363,10 +397,12 @@
 (add-hook 'emacs-lisp-mode-hook 'show-paren-local-mode)
 
 (global-set-key (kbd "M-/") 'hippie-expand)
-(when (file-exists-p (concat ext-dir "/modules/php-mode.el"))
-  (load (concat ext-dir "/modules/php-mode.el")))
-(when (file-exists-p (concat ext-dir "/modules/markdown-mode.el"))
-  (load (concat ext-dir "/modules/markdown-mode.el")))
+(when (file-exists-p ext-modules-dir)
+  (mapc 'load (directory-files ext-modules-dir nil "^[^#].*el$")))
+;;(when (file-exists-p (concat ext-dir "/modules/php-mode.el"))
+;;  (load (concat ext-dir "/modules/php-mode.el")))
+;;(when (file-exists-p (concat ext-dir "/modules/markdown-mode.el"))
+;;  (load (concat ext-dir "/modules/markdown-mode.el")))
 
 ;; slows down emacs startup
 ;;(when (>= emacs-major-version 24)
