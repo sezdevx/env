@@ -405,11 +405,12 @@
 ;;  (load (concat ext-dir "/modules/markdown-mode.el")))
 
 ;; slows down emacs startup
-;;(when (>= emacs-major-version 24)
-;;  (require 'package)
-;;  (add-to-list
-;;   'package-archives
-;;   '("MELPA" . "https://melpa.org/packages/") t)
-;;  (package-initialize)
-;;  (package-refresh-contents)
-;;  )
+;; (when (>= emacs-major-version 24)
+;; (require 'package)
+;; (add-to-list
+;; 'package-archives
+;; '("MELPA" . "https://melpa.org/packages/") t)
+;; (package-initialize)
+;; (package-refresh-contents)
+;; )
+
