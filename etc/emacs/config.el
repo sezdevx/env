@@ -5,7 +5,7 @@
 (defconst autosaves-dir (concat env_home_dir "/data/emacs/autosaves"))
 (defconst ext-modules-dir (concat env_home_dir "/ext/emacs/modules"))
 (defconst data-dir (concat env_home_dir "/data/emacs"))
-(defconst base-emacs-dir (concat env_base_dir "/etc/emacs/custom"))
+(setq user-emacs-directory data-dir)
 
 ;; (setq is-mac (equal system-type 'darwin))
 ;; (when is-mac ... do something)
@@ -13,9 +13,19 @@
 ;; create backup and autosave directories if not created already
 (make-directory backups-dir t)
 (make-directory autosaves-dir t)
-(add-to-list 'load-path (concat base-emacs-dir))
 (add-to-list 'load-path ext-modules-dir)
-(setq user-emacs-directory data-dir)
+
+(setq backup-directory-alist (list (cons ".*" backups-dir)))
+
+;; Setup Autosave Files
+(defun auto-save-file-name-p (filename)  (string-match "^#.*#$" (file-name-nondirectory filename)))
+(defun make-auto-save-file-name ()
+  (concat autosaves-dir
+          (if buffer-file-name
+              (concat "/#" (file-name-nondirectory buffer-file-name) "#")
+            (expand-file-name
+             (concat "/#%" (buffer-name) "#")))))
+
 
 ;;When moving to another screen using up or down arrow don't move the cursor
 ;;keep it either at the bottom when moving down or at the top when moving up
@@ -70,7 +80,6 @@
   )
 
 (setenv "TZ" (getenv "LOCAL_TIME_ZONE"))
-
 (defun set-current-theme ()
   (setq hour 
         (string-to-number 
@@ -110,18 +119,6 @@
 
 ;; delete the selection once we type something
 (delete-selection-mode t)
-
-(setq backup-directory-alist (list (cons ".*" backups-dir)))
-
-;; Setup Autosave Files
-(defun auto-save-file-name-p (filename)  (string-match "^#.*#$" (file-name-nondirectory filename)))
-(defun make-auto-save-file-name ()
-  (concat autosaves-dir
-          (if buffer-file-name
-              (concat "/#" (file-name-nondirectory buffer-file-name) "#")
-            (expand-file-name
-             (concat "/#%" (buffer-name) "#")))))
-
 
 ;; Enable line and column numbering
 (line-number-mode t)
@@ -190,36 +187,6 @@
    (t (push key unread-command-events))))
 
 
-;;Config File Extensions
-;;Auto-mode list
-;; (setq auto-mode-alist
-      ;; (append '(("\\.cxx$"        .       c++-mode)
-                ;; ("\\.CPP$"        .       c++-mode)
-                ;; ("\\.cc$"         .       c++-mode)
-                ;; ("\\.css$"        .       css-mode)
-                ;; ("\\.cs$"         .       java-mode)
-                ;; ("\\.js$"         .       javascript-mode)
-                ;; ("\\.tex$"        .       tex-mode)
-                ;; ("\\.C$"          .       c++-mode)
-                ;; ("\\.c$"          .       c-mode)
-                ;; ("\\.h$"          .       c++-mode)
-                ;; ("\\.java$"       .       java-mode)
-                ;; ("\\.emacs$"      .       emacs-lisp-mode)
-                ;; ("\\.kan$"        .       java-mode)
-                ;; ("\\.pl$"         .       cperl-mode)
-                ;; ("\\.xml$"        .       xml-mode)
-                ;; ("\\.pm$"         .       cperl-mode)
-                ;; ("\\.emacs$"      .       emacs-lisp-mode)
-                ;; ("make_[a-z]*$"   .       makefile-mode)
-                ;; ("Make_[a-z]*$"   .       makefile-mode)
-                ;; ("\\.txt$"        .       text-mode)
-                ;; ("\\.md$"         .       markdown-mode)
-                ;; ("\\.php$"        .       php-mode)
-                ;; ("\\.inc$"        .       php-mode)
-                ;; ("\\.html$"       .       html-mode)
-                ;; ("\\.lp$"         .       lisp-interaction-mode))
-              ;; auto-mode-alist))
-
 ;;Config C++
 (require 'compile)
 
@@ -281,42 +248,6 @@
 (setq completion-ignored-extensions
       '(".o" ".elc" ".tgz" ".dvi" ".aux" ".ps" ".pyc" ".class" ".exe"))
 
-;;(when (file-exists-p base-emacs-dir)
-;;  (mapc 'load (directory-files base-emacs-dir nil "^[^#].*el$")))
-
-
-;; (add-hook 'c++-mode-hook
-;;           (lambda ()
-;;             (unless (file-exists-p "Makefile")
-;;               (set (make-local-variable 'compile-command)
-;;                    ;; $(CC) -c -o $@ $(CPPFLAGS) $(CFLAGS) $<
-;;                    (let ((file (file-name-nondirectory buffer-file-name)))
-;;                      (format "%s -c -o %s.o %s %s %s"
-;;                              (or (getenv "CC") "gcc")
-;;                              (file-name-sans-extension file)
-;;                              (or (getenv "CPPFLAGS") "-DDEBUG=9")
-;;                              (or (getenv "CFLAGS") "-ansi -pedantic -Wall -g")
-;;                              file))))))
-;; (add-hook 'java-mode-hook
-;;           (lambda ()
-;;             (unless (file-exists-p "pom.xml")
-;;               (set (make-local-variable 'compile-command)
-;;                    (let ((file (file-name-nondirectory buffer-file-name)))
-;;                      (format "javac %s" file))))))
-
-;; define C-x C-c as the key to save and compile
-;; (defun my-save-and-compile ()
-;;  (interactive "")
-;;  (save-buffer 0)
-;;  (compile "make -k"))
-
-;; ;;(define-key c++-mode-map "\C-c\C-c" 'my-save-and-compile)
-;;(define-key c-mode-map "\C-c\C-c" 'my-save-and-compile)
-
-;;(normal-erase-is-backspace-mode 1)
-
-;;Highlight currentline
-;;(global-hl-line-mode 1)
 
 (global-set-key [remap goto-line] 'goto-line-with-numbers)
 
@@ -347,7 +278,7 @@
          `(
            ("php" . "php")
            ("pl" . "perl")
-           ("py" . "python")
+           ("py" . "python3")
            ("rb" . "ruby")
            ("sh" . "bash")
            ("java" . "javac")
@@ -430,5 +361,71 @@
 
 
 
+;; (defconst base-emacs-dir (concat env_base_dir "/etc/emacs/custom"))
+;; (add-to-list 'load-path (concat base-emacs-dir))
+;; (when (file-exists-p base-emacs-dir)
+;;   (mapc 'load (directory-files base-emacs-dir nil "^[^#].*el$")))
 
 
+;; (add-hook 'c++-mode-hook
+;;           (lambda ()
+;;             (unless (file-exists-p "Makefile")
+;;               (set (make-local-variable 'compile-command)
+;;                    ;; $(CC) -c -o $@ $(CPPFLAGS) $(CFLAGS) $<
+;;                    (let ((file (file-name-nondirectory buffer-file-name)))
+;;                      (format "%s -c -o %s.o %s %s %s"
+;;                              (or (getenv "CC") "gcc")
+;;                              (file-name-sans-extension file)
+;;                              (or (getenv "CPPFLAGS") "-DDEBUG=9")
+;;                              (or (getenv "CFLAGS") "-ansi -pedantic -Wall -g")
+;;                              file))))))
+;; (add-hook 'java-mode-hook
+;;           (lambda ()
+;;             (unless (file-exists-p "pom.xml")
+;;               (set (make-local-variable 'compile-command)
+;;                    (let ((file (file-name-nondirectory buffer-file-name)))
+;;                      (format "javac %s" file))))))
+
+;; define C-x C-c as the key to save and compile
+;; (defun my-save-and-compile ()
+;;  (interactive "")
+;;  (save-buffer 0)
+;;  (compile "make -k"))
+
+;; ;;(define-key c++-mode-map "\C-c\C-c" 'my-save-and-compile)
+;;(define-key c-mode-map "\C-c\C-c" 'my-save-and-compile)
+
+;;(normal-erase-is-backspace-mode 1)
+
+;;Highlight currentline
+;;(global-hl-line-mode 1)
+
+;;Config File Extensions
+;;Auto-mode list
+;; (setq auto-mode-alist
+      ;; (append '(("\\.cxx$"        .       c++-mode)
+                ;; ("\\.CPP$"        .       c++-mode)
+                ;; ("\\.cc$"         .       c++-mode)
+                ;; ("\\.css$"        .       css-mode)
+                ;; ("\\.cs$"         .       java-mode)
+                ;; ("\\.js$"         .       javascript-mode)
+                ;; ("\\.tex$"        .       tex-mode)
+                ;; ("\\.C$"          .       c++-mode)
+                ;; ("\\.c$"          .       c-mode)
+                ;; ("\\.h$"          .       c++-mode)
+                ;; ("\\.java$"       .       java-mode)
+                ;; ("\\.emacs$"      .       emacs-lisp-mode)
+                ;; ("\\.kan$"        .       java-mode)
+                ;; ("\\.pl$"         .       cperl-mode)
+                ;; ("\\.xml$"        .       xml-mode)
+                ;; ("\\.pm$"         .       cperl-mode)
+                ;; ("\\.emacs$"      .       emacs-lisp-mode)
+                ;; ("make_[a-z]*$"   .       makefile-mode)
+                ;; ("Make_[a-z]*$"   .       makefile-mode)
+                ;; ("\\.txt$"        .       text-mode)
+                ;; ("\\.md$"         .       markdown-mode)
+                ;; ("\\.php$"        .       php-mode)
+                ;; ("\\.inc$"        .       php-mode)
+                ;; ("\\.html$"       .       html-mode)
+                ;; ("\\.lp$"         .       lisp-interaction-mode))
+              ;; auto-mode-alist))
