@@ -344,6 +344,7 @@
 (global-set-key (kbd "M-/") 'hippie-expand)
 (when (file-exists-p ext-modules-dir)
   (mapc 'load (directory-files ext-modules-dir nil "^[^#].*el$")))
+
 ;;(when (file-exists-p (concat ext-dir "/modules/php-mode.el"))
 ;;  (load (concat ext-dir "/modules/php-mode.el")))
 ;;(when (file-exists-p (concat ext-dir "/modules/markdown-mode.el"))
