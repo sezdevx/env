@@ -1,5 +1,3 @@
-;; -*- Mode: Emacs-Lisp -*-
-
 ;; where emacs backup and autosave files go
 (setq env_home_dir (if (stringp (getenv "ENV_HOME_DIR")) (getenv "ENV_HOME_DIR") (expand-file-name "~/.env")))
 (setq env_base_dir (if (stringp (getenv "ENV_BASE_DIR")) (getenv "ENV_BASE_DIR") (expand-file-name "~/env")))
@@ -15,9 +13,9 @@
 ;; create backup and autosave directories if not created already
 (make-directory backups-dir t)
 (make-directory autosaves-dir t)
-
 (add-to-list 'load-path (concat base-emacs-dir))
 (add-to-list 'load-path ext-modules-dir)
+(setq user-emacs-directory data-dir)
 
 ;;When moving to another screen using up or down arrow don't move the cursor
 ;;keep it either at the bottom when moving down or at the top when moving up
@@ -45,7 +43,11 @@
   (set-background-color "#FFFFFF")
   (set-foreground-color "black")
   (set-cursor-color "black")
-  )
+  (set-face-foreground 'mode-line "#FFFFFF")
+  (set-face-background 'mode-line "#997373")
+  (set-face-foreground 'mode-line-inactive "#FFFFFF")
+  (set-face-background 'mode-line-inactive "#997373")
+    )
 (defun set-dark-colors ()
   ;;Customize colors (To see the font lock applying to a point Ctrl-u Ctrl-x =)
   (set-face-foreground 'font-lock-string-face "#76CB58")
@@ -60,6 +62,11 @@
   (set-background-color "black")
   (set-foreground-color "#FFFFFF")
   (set-cursor-color "#FFFFFF")
+  (set-face-foreground 'mode-line "#FFFFFF")
+  (set-face-background 'mode-line "#4266B2")
+  (set-face-foreground 'mode-line-inactive "#FFFFFF")
+  (set-face-background 'mode-line-inactive "#4266B2")
+
   )
 
 (setenv "TZ" (getenv "LOCAL_TIME_ZONE"))
@@ -70,7 +77,7 @@
          (substring (current-time-string) 11 13)))
   (if (member hour (number-sequence 6 18))
       ;;(set-light-colors)
-      (set-dark-colors)    
+      (set-dark-colors)
     (set-dark-colors)
     ))
 (run-with-timer 0 3600 'set-current-theme)
@@ -111,9 +118,9 @@
 (defun make-auto-save-file-name ()
   (concat autosaves-dir
           (if buffer-file-name
-              (concat "#" (file-name-nondirectory buffer-file-name) "#")
+              (concat "/#" (file-name-nondirectory buffer-file-name) "#")
             (expand-file-name
-             (concat "#%" (buffer-name) "#")))))
+             (concat "/#%" (buffer-name) "#")))))
 
 
 ;; Enable line and column numbering
@@ -147,6 +154,7 @@
 
 
 ;;Global Key Bindings
+(global-set-key (kbd "M-i") 'imenu)
 (global-set-key "\C-x\C-g" 'goto-line)
 (global-set-key "\C-x\C-c" 'comment-line)
 (global-set-key "\C-x\C-v" 'find-tag)
@@ -184,33 +192,33 @@
 
 ;;Config File Extensions
 ;;Auto-mode list
-(setq auto-mode-alist
-      (append '(("\\.cxx$"        .       c++-mode)
-                ("\\.CPP$"        .       c++-mode)
-                ("\\.cc$"         .       c++-mode)
-                ("\\.css$"        .       css-mode)
-                ("\\.cs$"         .       java-mode)
-                ("\\.js$"         .       javascript-mode)
-                ("\\.tex$"        .       tex-mode)
-                ("\\.C$"          .       c++-mode)
-                ("\\.c$"          .       c-mode)
-                ("\\.h$"          .       c++-mode)
-                ("\\.java$"       .       java-mode)
-                ("\\.emacs$"      .       emacs-lisp-mode)
-                ("\\.kan$"        .       java-mode)
-                ("\\.pl$"         .       cperl-mode)
-                ("\\.xml$"        .       xml-mode)
-                ("\\.pm$"         .       cperl-mode)
-                ("\\.emacs$"      .       emacs-lisp-mode)
-                ("make_[a-z]*$"   .       makefile-mode)
-                ("Make_[a-z]*$"   .       makefile-mode)
-                ("\\.txt$"        .       text-mode)
-                ("\\.md$"         .       markdown-mode)
-                ("\\.php$"        .       php-mode)
-                ("\\.inc$"        .       php-mode)
-                ("\\.html$"       .       html-mode)
-                ("\\.lp$"         .       lisp-interaction-mode))
-              auto-mode-alist))
+;; (setq auto-mode-alist
+      ;; (append '(("\\.cxx$"        .       c++-mode)
+                ;; ("\\.CPP$"        .       c++-mode)
+                ;; ("\\.cc$"         .       c++-mode)
+                ;; ("\\.css$"        .       css-mode)
+                ;; ("\\.cs$"         .       java-mode)
+                ;; ("\\.js$"         .       javascript-mode)
+                ;; ("\\.tex$"        .       tex-mode)
+                ;; ("\\.C$"          .       c++-mode)
+                ;; ("\\.c$"          .       c-mode)
+                ;; ("\\.h$"          .       c++-mode)
+                ;; ("\\.java$"       .       java-mode)
+                ;; ("\\.emacs$"      .       emacs-lisp-mode)
+                ;; ("\\.kan$"        .       java-mode)
+                ;; ("\\.pl$"         .       cperl-mode)
+                ;; ("\\.xml$"        .       xml-mode)
+                ;; ("\\.pm$"         .       cperl-mode)
+                ;; ("\\.emacs$"      .       emacs-lisp-mode)
+                ;; ("make_[a-z]*$"   .       makefile-mode)
+                ;; ("Make_[a-z]*$"   .       makefile-mode)
+                ;; ("\\.txt$"        .       text-mode)
+                ;; ("\\.md$"         .       markdown-mode)
+                ;; ("\\.php$"        .       php-mode)
+                ;; ("\\.inc$"        .       php-mode)
+                ;; ("\\.html$"       .       html-mode)
+                ;; ("\\.lp$"         .       lisp-interaction-mode))
+              ;; auto-mode-alist))
 
 ;;Config C++
 (require 'compile)
@@ -317,9 +325,12 @@
   (interactive)
   (unwind-protect
       (progn
-        (linum-mode 1)
+        ;;(linum-mode 1)
+        (global-display-line-numbers-mode 1)
         (goto-line (read-number "Goto line: ")))
-    (linum-mode -1)))
+                                        ;(linum-mode -1)
+    (global-display-line-numbers-mode -1)
+    ))
 
 (defvar run-current-file-before-hook nil "Hook for `run-current-file'. Before the file is run.")
 (defvar run-current-file-after-hook nil "Hook for `run-current-file'. After the file is run.")
@@ -387,6 +398,9 @@
          (list (line-beginning-position) (line-beginning-position 2)))))
 
 
+;; https://www.emacswiki.org/emacs/SavePlace
+(save-place-mode 1)
+
 ;; https://stackoverflow.com/questions/10266986/how-to-enable-show-paren-mode-only-for-el-files
 (show-paren-mode)
 (setq show-paren-mode ())
@@ -413,4 +427,8 @@
 ;; (package-initialize)
 ;; (package-refresh-contents)
 ;; )
+
+
+
+
 
