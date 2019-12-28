@@ -80,7 +80,7 @@ function getRealPath()
 function openResource()
 {
     # yes, I know if [[ $# == 1 ]]; then is more efficient
-    if [[ $# == 1 && "$1" == "home" ]]; then
+    if [[ $# == 1 && "$1" == "env" ]]; then
         shift # remove the first argument
         set -- "$@" "https://github.com/sezdevx/env"
     elif [[ $# == 1 && "$1" == "bash" ]]; then
