@@ -83,7 +83,7 @@ of platforms.
 * `disableCore`: to disable cores again
 * `getMd5`: gets the md5 of a given file
 * `openResource`: tries to open the given path with the OS's assigned app, if can't open it, it prints on the terminal.
- For the following it opens github page of documentation (env|bash|emacs|vim|git|awk)
+ For the following it opens github page of respective documentation (env|bash|emacs|vim|git|awk)
 * `download`: download a url to a local file (if curl or wget is available)
 * `responseHeaders`: shows reponse headers of a given url (only if curl is available)
 * `allHeaders`: shows all HTTP headers of a given url (only if curl is available)
