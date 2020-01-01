@@ -1,6 +1,7 @@
 " mostly from https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 
 set runtimepath+=$ENV_BASE_DIR/etc/vim/
+set runtimepath+=$ENV_HOME_DIR/ext/vim/
 
 " unlimited undo
 set nocompatible
@@ -77,6 +78,7 @@ set scrolloff=5
 let mapleader = ","
 
 nmap <leader>w :w!<cr>
+map <leader>rp :w<cr>:!python2 %<cr>
 
 nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>

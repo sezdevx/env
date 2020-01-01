@@ -1,7 +1,7 @@
 ;; where emacs backup and autosave files go
 (setq env_home_dir (if (stringp (getenv "ENV_HOME_DIR")) (getenv "ENV_HOME_DIR") (expand-file-name "~/.env")))
 (setq env_base_dir (if (stringp (getenv "ENV_BASE_DIR")) (getenv "ENV_BASE_DIR") (expand-file-name "~/env")))
-(defconst backups-dir (concat env_home_dir "/data/emacs/backups"))
+;;(defconst backups-dir (concat env_home_dir "/data/emacs/backups"))
 (defconst autosaves-dir (concat env_home_dir "/data/emacs/autosaves"))
 (defconst ext-modules-dir (concat env_home_dir "/ext/emacs/modules"))
 (defconst data-dir (concat env_home_dir "/data/emacs"))
@@ -11,11 +11,11 @@
 ;; (when is-mac ... do something)
 
 ;; create backup and autosave directories if not created already
-(make-directory backups-dir t)
+;;(make-directory backups-dir t)
 (make-directory autosaves-dir t)
 (add-to-list 'load-path ext-modules-dir)
 
-(setq backup-directory-alist (list (cons ".*" backups-dir)))
+;;(setq backup-directory-alist (list (cons ".*" backups-dir)))
 
 ;; Setup Autosave Files
 (defun auto-save-file-name-p (filename)  (string-match "^#.*#$" (file-name-nondirectory filename)))
@@ -104,11 +104,13 @@
     (setq save-abbrevs t)))
 
 ;;Setup Backup
-(setq make-backup-files t)
-(setq version-control t)
-(setq delete-old-versions t)
-(setq kept-new-versions 2)
-(setq kept-old-versions 1)
+(setq make-backup-files nil)
+;;(setq make-backup-files t)
+;;(setq version-control t)
+;;(setq delete-old-versions t)
+;;(setq kept-new-versions 2)
+;;(setq kept-old-versions 1)
+
 
 ;;utf-8
 (setq locale-coding-system 'utf-8)
