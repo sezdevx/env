@@ -27,6 +27,7 @@ prependPath PATH $ENV_BASE_DIR/bin
 
 # [Other Environment Variables]
 export TZ=Etc/UTC # use UTC by default everywhere
+export LOCAL_TIME_ZONE
 export PAGER=less
 export LESSCHARSET='utf-8'
 export TMOUT=0 # never logout due to inactivity
