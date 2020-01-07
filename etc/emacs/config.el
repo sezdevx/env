@@ -40,7 +40,7 @@
 (setq frame-title-format (concat  "%b - emacs@" system-name))
 
 (defun set-light-colors ()
-  (set-face-background 'region "blue3")
+  (set-face-background 'region "DodgerBlue2")
   (set-face-foreground 'font-lock-string-face "Red")
   (set-face-foreground 'font-lock-comment-face "Purple2")
   (set-face-foreground 'font-lock-keyword-face "purple2")
@@ -60,7 +60,7 @@
     )
 (defun set-dark-colors ()
   ;;Customize colors (To see the font lock applying to a point Ctrl-u Ctrl-x =)
-  (set-face-background 'region "blue3")
+  (set-face-background 'region "DodgerBlue2")
   (set-face-foreground 'font-lock-string-face "#76CB58")
   (set-face-foreground 'font-lock-comment-face "#629755")
   (set-face-foreground 'font-lock-keyword-face "#CC7832")
@@ -87,8 +87,8 @@
          (substring (current-time-string) 11 13)))
   (if (member hour (number-sequence 6 18))
       ;;(set-light-colors)
-      (set-light-colors)
-    (set-light-colors)
+      (set-dark-colors)
+    (set-dark-colors)
     ))
 (run-with-timer 0 3600 'set-current-theme)
 

@@ -89,6 +89,9 @@ function openResource()
     elif [[ $# == 1 && "$1" == "vim" ]]; then
         shift
         set -- "$@" "https://github.com/sezdevx/learn/blob/master/vim/readme.md"
+    elif [[ $# == 1 && "$1" == "tmux" ]]; then
+        shift
+        set -- "$@" "https://github.com/sezdevx/learn/blob/master/linux/tmux.md
     elif [[ $# == 1 && "$1" == "git" ]]; then
         shift
         set -- "$@" "https://github.com/sezdevx/learn/blob/master/git/readme.md"

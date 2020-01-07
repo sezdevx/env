@@ -77,9 +77,6 @@ set scrolloff=5
 
 let mapleader = ","
 
-nmap <leader>w :w!<cr>
-map <leader>rp :w<cr>:!python2 %<cr>
-
 nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :bfirst<CR>
@@ -91,8 +88,6 @@ map <leader>bd :Bclose<cr>:tabclose<cr>gT
 " Close all the buffers
 map <leader>ba :bufdo bd<cr>
 
-map <leader>l :bnext<cr>
-map <leader>h :bprevious<cr>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
@@ -104,6 +99,8 @@ map <leader>pt :tabprevious
 nnoremap <leader>ev :e $ENV_BASE_DIR/etc/vim/vimrc<cr>
 nnoremap <leader>sv :source $ENV_BASE_DIR/etc/vim/vimrc<cr>
 
+source $ENV_BASE_DIR/etc/vim/pl.vim
+
 "
 let $TZ=$LOCAL_TIME_ZONE
 let hr = (strftime('%H'))
@@ -111,35 +108,37 @@ hi clear
 if exists("syntax_on")
   syntax reset
 endif
-if hr >= 27
+" https://jonasjacek.github.io/colors/
+"if hr < 7 || hr >= 18
+if 1 > 0
   "source $ENV_BASE_DIR/etc/vim/colors.vim
   set background=dark
 
   hi Normal		  ctermfg=white ctermbg=black
-  hi ErrorMsg		ctermfg=white ctermbg=lightblue
-  hi Visual	   	ctermbg=fg cterm=reverse
-  hi VisualNOS	ctermbg=fg cterm=reverse,underline
+  hi ErrorMsg		ctermfg=white ctermbg=1
+  hi Visual	   	ctermfg=blue ctermbg=fg cterm=reverse
+  hi VisualNOS	ctermfg=blue ctermbg=fg cterm=reverse,underline
   hi Todo			  ctermbg=darkblue
-  hi Search		  ctermbg=darkblue cterm=underline term=underline
+  hi Search		  ctermbg=darkblue cterm=underline 
   hi IncSearch	ctermbg=gray
 
   hi SpecialKey		ctermfg=darkcyan
   hi Directory		ctermfg=cyan
   hi Title			ctermfg=magenta cterm=bold
   hi WarningMsg		ctermfg=red
-  hi WildMenu			ctermfg=yellow ctermbg=black cterm=none term=none
+  hi WildMenu			ctermfg=yellow ctermbg=black cterm=none 
   hi ModeMsg			ctermfg=lightblue
-  hi MoreMsg			ctermfg=darkgreen	ctermfg=darkgreen
+  hi MoreMsg			ctermfg=green
   hi Question			ctermfg=green cterm=none
-  hi NonText			ctermfg=darkblue
+  hi NonText			ctermfg=39 cterm=bold
 
   hi StatusLine	ctermfg=white ctermbg=61 term=none cterm=none
   hi StatusLineNC	ctermfg=black ctermbg=61 term=none cterm=none
   hi VertSplit	ctermfg=black ctermbg=61 term=none cterm=none
 
-  hi Folded	ctermbg=black cterm=bold term=bold
-  hi FoldColumn	ctermbg=black cterm=bold term=bold
-  hi LineNr	cterm=none
+  hi Folded	ctermbg=black cterm=bold 
+  hi FoldColumn	ctermbg=black cterm=bold
+  hi LineNr	ctermfg=green cterm=none
 
   hi DiffAdd	term=none cterm=none
   hi DiffChange	ctermbg=magenta cterm=none
@@ -151,21 +150,22 @@ if hr >= 27
 
   hi Comment	ctermfg=65
   hi String   ctermfg=113
-  hi Function ctermfg=172
+  hi Function ctermfg=172 cterm=bold
   hi Constant	ctermfg=75 cterm=none
-  hi Special	ctermfg=146 cterm=none 
-  hi Identifier	ctermfg=221 cterm=none
-  hi Statement	ctermfg=172 cterm=none 
-  hi PreProc	ctermfg=214 cterm=none
+  hi Special	ctermfg=146 cterm=none
+  hi Identifier	ctermfg=221 cterm=bold
+  hi Statement	ctermfg=172 cterm=bold
+  hi PreProc	ctermfg=214 cterm=none 
   hi type		ctermfg=81 cterm=none
   hi Underlined	cterm=underline term=underline
   hi Ignore	ctermfg=bg
+
 else
   set background=light
   hi Normal		  ctermfg=black ctermbg=white
-  hi ErrorMsg		ctermfg=white ctermbg=196
-  hi Visual	   	ctermbg=fg cterm=reverse
-  hi VisualNOS	ctermbg=fg cterm=reverse,underline
+  hi ErrorMsg		ctermfg=white ctermbg=1
+  hi Visual	   	ctermfg=blue ctermbg=fg cterm=reverse
+  hi VisualNOS	ctermfg=blue ctermbg=fg cterm=reverse,underline
   hi Todo			  ctermbg=darkblue
   hi Search		  ctermbg=darkblue cterm=underline term=underline
   hi IncSearch	ctermbg=gray
@@ -187,6 +187,7 @@ else
   hi Folded	ctermbg=black cterm=bold term=bold
   hi FoldColumn	ctermbg=black cterm=bold term=bold
   hi LineNr	cterm=none
+  hi LineNr	ctermfg=green cterm=none
 
   hi DiffAdd	term=none cterm=none
   hi DiffChange	ctermbg=magenta cterm=none
@@ -240,3 +241,10 @@ function! <SID>BufcloseCloseIt()
     endif
 endfunction
 
+
+inoremap <C-e> <C-o>$
+inoremap <C-a> <C-o>0
+
+" map backspace to x in visual mode
+" so when you select a region, it immediately deletes it
+vmap <BS> x
