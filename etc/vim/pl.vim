@@ -6,6 +6,8 @@ augroup python
    autocmd FileType python let python_highlight_all=1
    autocmd FileType python nnoremap <buffer> <leader>rp :w<cr>:!python3 %<cr>
 
+   autocmd FileType python set textwidth=79
+
    " abbreviations for python
    autocmd FileType python :iabbrev <buffer> iff if :<left>
 augroup END
