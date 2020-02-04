@@ -64,7 +64,9 @@ alias mv='mv -i'
 #paths
 alias paths='echo -e ${PATH//:/\\n}'
 # programs
-alias emacs="emacs -Q --load ${ENV_BASE_DIR}/etc/emacs/config.el"
+# somehow we need this export thing because under tmux both
+# emacs and vim do not show the colors properly
+alias emacs="export TERM=screen-256color && emacs -Q --load ${ENV_BASE_DIR}/etc/emacs/config.el"
 alias vim="export TERM=screen-256color && vim -u ${ENV_BASE_DIR}/etc/vim/vimrc"
 alias tmux="tmux -f $ENV_BASE_DIR/etc/tmux.conf"
 alias tm="tmux attach"

@@ -10,6 +10,18 @@ augroup python
 
    " abbreviations for python
    autocmd FileType python :iabbrev <buffer> iff if :<left>
+
+   autocmd FileType python vnoremap <buffer> <silent> # :s/^/#/<cr>:noh<cr>
+   autocmd FileType python vnoremap <buffer> <silent> -# :s/^#//<cr>:noh<cr>
+
+   autocmd FileType python set tabstop=4 
+   autocmd FileType python set softtabstop=4 
+   autocmd FileType python set shiftwidth=4
+   autocmd FileType python set textwidth=79
+   autocmd FileType python set expandtab 
+   autocmd FileType python set autoindent
+   autocmd FileType python set fileformat=unix
+
 augroup END
 "map <leader>rp :w<cr>:!python3 %<cr>
 
