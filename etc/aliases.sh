@@ -77,6 +77,12 @@ alias localDate="TZ=$LOCAL_TIME_ZONE date  '+$ISO_DATE_FMT'"
 alias utcDate="TZ=Etc/UTC date -u '+$ISO_DATE_FMT'"
 alias localTime="TZ=$LOCAL_TIME_ZONE date  '+%H:%M:%S'"
 
+if [[ `command -v python3` ]]; then
+    alias py=python3
+else
+    alias py=python
+fi
+
 
 # display pid too
 alias jobs='jobs -l'
