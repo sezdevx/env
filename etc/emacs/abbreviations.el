@@ -56,6 +56,11 @@
     ("iox" "IOException" nil 0)
     ))
 
+(define-abbrev-table 'python-mode-abbrev-table '(
+    ("im" "import" nil 0)
+    ("fr" "from" nil 0)
+    ))
+
 (define-abbrev-table 'objc-mode-abbrev-table '(
     ))
 

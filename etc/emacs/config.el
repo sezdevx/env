@@ -96,9 +96,10 @@
 (setq abbrev-file (expand-file-name "abbreviations.el" (concat env_base_dir "/etc/emacs")))
 (when (file-exists-p abbrev-file)
   (progn
-    ;;(setq-default abbrev-mode t)
+    (setq-default abbrev-mode t)
     (read-abbrev-file abbrev-file)
-    (setq save-abbrevs t)))
+    ;;(setq save-abbrevs t)
+    ))
 
 ;;Setup Backup
 (setq make-backup-files nil)
