@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+# check if we are running from tests directory, if not exit
+export BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export CWD="$(pwd)"
+if [[ $BASE_DIR != $CWD ]]; then
+    echo "You need to run from tests directory"
+    exit 1
+fi
+
+
 # run with ./test.sh 1 to run visual interactive tests too
 # visual tests are those that require user interaction
 
@@ -15,6 +24,7 @@ function cleanUp()
     \rm -f a.tar
     \rm -rf tmp
 }
+
 
 visualTests=${1:0}
 
