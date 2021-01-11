@@ -1,4 +1,4 @@
-# Free Stuff
+# Must Install
 
 * [Brew](https://brew.sh/)
 ```shell script
@@ -13,6 +13,7 @@ echo /usr/local/bin/bash >> /etc/shells
 exit
 chsh -s /usr/local/bin/bash
 ```
+# Free Stuff
 
 * [Chrome](https://www.google.com/chrome/)
 
@@ -89,12 +90,12 @@ mv markdown-mode.el ~/.env/ext/emacs/modules
 * [Apache](https://httpd.apache.org/) Already installed on mac
 ```shell script
 # starts apache server
-apachectl start
+sudo apachectl start
 cd /etc/apache2/
-# restart after editing httpd.conf file
+# restart after editing httpd.conf file with sudo
 # apachectl restart
 # stops apache server
-apachectl stop
+sudo apachectl stop
 ```
 
 # Paid Stuff
@@ -119,10 +120,3 @@ apachectl stop
 * `Finder Preferences > Advanced > When performaing a search > Search the Current Folder`
 * `System Preferences > Trackpad > Tap to Click`: Check
 * `System Preferences > Accessibility > Pointer Control > Trackpad Options > Enable Dragging`: Check
-
-
-
-
-
-
-

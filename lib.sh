@@ -79,6 +79,10 @@ function getRealPath()
 # openResource [bash|awk|git|emacs|vim] opens the documentation for the corresponding program
 function openResource()
 {
+    if [[ $# == 0 ]]; then
+        echo "Built-in options: env, bash, vim, tmux, git, emacs, awk"
+        return
+    fi
     # yes, I know if [[ $# == 1 ]]; then is more efficient
     if [[ $# == 1 && "$1" == "env" ]]; then
         shift # remove the first argument
