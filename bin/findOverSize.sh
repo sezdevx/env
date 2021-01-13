@@ -26,7 +26,7 @@ elif [ "${sizeStr:length:1}" = "g" ]; then
     sizeStr=${sizeStr:0:length}"G"
 elif [[ "${sizeStr:length:1}" =~ [[:digit:]] ]]; then
     sizeStr=${sizeStr}
-elif [[ ! "${sizeStr:length:1}" =~ [kmg] ]]; then
+elif [[ ! "${sizeStr:length:1}" =~ [kMG] ]]; then
     echo "Incorrect argument: $sizeStr"
     exit 1
 fi
