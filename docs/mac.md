@@ -5,6 +5,23 @@
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ``` 
 
+In case your shell can not find the brew, especially on M1 macs try this:
+```shell
+# put the following to ~/.zhrc
+eval $(/opt/homebrew/bin/brew shellenv)
+```
+You need to start a new shell to see that now `brew` is available:
+```shell
+which brew
+/opt/homebrew/bin/brew
+```
+
+To remove it later
+```shell script
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
+```
+
+
 * [bash](https://www.gnu.org/software/bash/)
 ```shell script
 brew install bash
