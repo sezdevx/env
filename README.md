@@ -470,6 +470,9 @@ Install the [github client](https://cli.github.com/)
 ```
 cd ~/project_dir
 git init
-git commit --allow-empty -n -m "Initial commit."
 gh repo create my-project --private --source=. --remote=upstream
+git commit --allow-empty -n -m "Initial commit."
+git branch -M main 
+git commit -m "first version"
+git push -u origin main
 ```
