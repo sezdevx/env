@@ -445,6 +445,21 @@ function gitCommit() {
     git add . && git commit -m "$*" && git push origin "$BRANCH"
 }
 
+function gitCreate() {
+    if ! hasCommand "gh" ; then
+        print "Install gh from https://cli.github.com/"
+        exit 1
+    fi
+    [[ ! -d $1 ]] && mkdir $1
+    cd $1
+    git init
+    gh repo create $1 --private --source=. --remote=upstream
+    touch README.md
+    git add README.md
+    git commit -m "first commit"
+    git push --set-upstream upstream main
+}
+
 
 function setupDisplay ()
 {

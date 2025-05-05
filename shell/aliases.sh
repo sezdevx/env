@@ -37,7 +37,7 @@ alias sane="stty sane; trap INT"
 alias edel="\rm *~; \rm .*~"
 
 # to reread this file from the shell
-alias reloadEnv=". $ENV_HOME_DIR/bash/start.sh"
+alias reloadEnv=". $ENV_HOME_DIR/shell/zsh_start.sh"
 # to update and reload env
 alias updateEnv="cd $ENV_HOME_DIR && git pull && reloadEnv; cd $OLDPWD"
 
