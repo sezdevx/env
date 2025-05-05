@@ -1,0 +1,250 @@
+" mostly from https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
+
+set runtimepath+=$ENV_BASE_DIR/etc/vim/
+set runtimepath+=$ENV_HOME_DIR/ext/vim/
+
+" unlimited undo
+set nocompatible
+
+" when a file is read from outside
+set autoread
+
+" Show matching brackets when text indicator is over them
+set showmatch
+set mat=2
+
+" always show the status line
+set laststatus=2
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c:q
+
+
+" so we can use bnext without !
+set hidden
+
+set ruler
+set cmdheight=2
+
+syntax on
+filetype plugin on
+filetype indent on
+
+set history=500
+
+" Use spaces instead of tabs
+set expandtab
+set smarttab
+" 1 tab == 4 spaces
+set shiftwidth=2
+set tabstop=2
+" fix backspace
+set backspace=indent,eol,start
+
+set ai "auto indent
+set si "smart indent
+set wrap "wrap lines
+
+" Smart way to move between windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Turn on the Wild menu
+set wildmenu
+set wildignore=*.o,*~,*.pyc,*.class
+
+" incremental search, like in other editors
+set incsearch
+
+" performance boost when running macros
+set lazyredraw
+
+" stop annoying me
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+set encoding=utf8
+set ffs=unix,dos,mac
+
+" since we use version control system
+set nobackup
+set nowb
+set noswapfile
+
+set scrolloff=5
+
+let mapleader = ","
+
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> [B :bfirst<CR>
+nnoremap <silent> ]B :blast<CR>
+
+" Close the current buffer
+map <leader>bd :Bclose<cr>:tabclose<cr>gT
+
+" Close all the buffers
+map <leader>ba :bufdo bd<cr>
+
+
+" Useful mappings for managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
+map <leader>nt :tabnext
+map <leader>pt :tabprevious
+nnoremap <leader>ev :e $ENV_BASE_DIR/etc/vim/vimrc<cr>
+nnoremap <leader>sv :source $ENV_BASE_DIR/etc/vim/vimrc<cr>
+
+source $ENV_BASE_DIR/etc/vim/pl.vim
+
+"
+let $TZ=$LOCAL_TIME_ZONE
+let hr = (strftime('%H'))
+hi clear
+if exists("syntax_on")
+  syntax reset
+endif
+" https://jonasjacek.github.io/colors/
+"if hr < 7 || hr >= 18
+if 1 > 0
+  "source $ENV_BASE_DIR/etc/vim/colors.vim
+  set background=dark
+
+  hi Normal		  ctermfg=white ctermbg=black
+  hi ErrorMsg		ctermfg=white ctermbg=1
+  hi Visual	   	ctermfg=blue ctermbg=fg cterm=reverse
+  hi VisualNOS	ctermfg=blue ctermbg=fg cterm=reverse,underline
+  hi Todo			  ctermbg=darkblue
+  hi Search		  ctermbg=darkblue cterm=underline 
+  hi IncSearch	ctermbg=gray
+
+  hi SpecialKey		ctermfg=darkcyan
+  hi Directory		ctermfg=cyan
+  hi Title			ctermfg=magenta cterm=bold
+  hi WarningMsg		ctermfg=red
+  hi WildMenu			ctermfg=yellow ctermbg=black cterm=none 
+  hi ModeMsg			ctermfg=lightblue
+  hi MoreMsg			ctermfg=green
+  hi Question			ctermfg=green cterm=none
+  hi NonText			ctermfg=39 cterm=bold
+
+  hi StatusLine	ctermfg=white ctermbg=61 term=none cterm=none
+  hi StatusLineNC	ctermfg=black ctermbg=61 term=none cterm=none
+  hi VertSplit	ctermfg=black ctermbg=61 term=none cterm=none
+
+  hi Folded	ctermbg=black cterm=bold 
+  hi FoldColumn	ctermbg=black cterm=bold
+  hi LineNr	ctermfg=green cterm=none
+
+  hi DiffAdd	term=none cterm=none
+  hi DiffChange	ctermbg=magenta cterm=none
+  hi DiffDelete	ctermfg=blue ctermbg=cyan 
+  hi DiffText	cterm=bold ctermbg=red 
+
+  hi Cursor	ctermfg=black ctermbg=yellow
+  hi lCursor	ctermfg=black ctermbg=white
+
+  hi Comment	ctermfg=65
+  hi String   ctermfg=113
+  hi Function ctermfg=172 cterm=bold
+  hi Constant	ctermfg=75 cterm=none
+  hi Special	ctermfg=146 cterm=none
+  hi Identifier	ctermfg=221 cterm=bold
+  hi Statement	ctermfg=172 cterm=bold
+  hi PreProc	ctermfg=214 cterm=none 
+  hi type		ctermfg=81 cterm=none
+  hi Underlined	cterm=underline term=underline
+  hi Ignore	ctermfg=bg
+
+else
+  set background=light
+  hi Normal		  ctermfg=black ctermbg=white
+  hi ErrorMsg		ctermfg=white ctermbg=1
+  hi Visual	   	ctermfg=blue ctermbg=fg cterm=reverse
+  hi VisualNOS	ctermfg=blue ctermbg=fg cterm=reverse,underline
+  hi Todo			  ctermbg=darkblue
+  hi Search		  ctermbg=darkblue cterm=underline term=underline
+  hi IncSearch	ctermbg=gray
+
+  hi SpecialKey		ctermfg=darkcyan
+  hi Directory		ctermfg=cyan
+  hi Title			ctermfg=magenta cterm=bold
+  hi WarningMsg		ctermfg=red
+  hi WildMenu			ctermfg=yellow ctermbg=black cterm=none term=none
+  hi ModeMsg			ctermfg=lightblue
+  hi MoreMsg			ctermfg=darkgreen	ctermfg=darkgreen
+  hi Question			ctermfg=green cterm=none
+  hi NonText			ctermfg=darkblue
+
+  hi StatusLine	ctermfg=white ctermbg=61 term=none cterm=none
+  hi StatusLineNC	ctermfg=black ctermbg=61 term=none cterm=none
+  hi VertSplit	ctermfg=black ctermbg=61 term=none cterm=none
+
+  hi Folded	ctermbg=black cterm=bold term=bold
+  hi FoldColumn	ctermbg=black cterm=bold term=bold
+  hi LineNr	cterm=none
+  hi LineNr	ctermfg=green cterm=none
+
+  hi DiffAdd	term=none cterm=none
+  hi DiffChange	ctermbg=magenta cterm=none
+  hi DiffDelete	ctermfg=blue ctermbg=cyan 
+  hi DiffText	cterm=bold ctermbg=red 
+
+  hi Cursor	ctermfg=black ctermbg=yellow
+  hi lCursor	ctermfg=black ctermbg=white
+
+  hi Comment	ctermfg=129
+  hi String   ctermfg=124
+  hi Function ctermfg=93
+  hi Constant	ctermfg=124 cterm=none
+  hi Special	ctermfg=147 cterm=none 
+  hi Identifier	ctermfg=93 cterm=none
+  hi Statement	ctermfg=1 cterm=none 
+  hi PreProc	ctermfg=202 cterm=none
+  hi type		ctermfg=69 cterm=none
+  hi Underlined	cterm=underline term=underline
+  hi Ignore	ctermfg=bg
+
+endif
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+
+" Don't close window, when deleting a buffer
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+    let l:currentBufNum = bufnr("%")
+    let l:alternateBufNum = bufnr("#")
+
+    if buflisted(l:alternateBufNum)
+        buffer #
+    else
+        bnext
+    endif
+
+    if bufnr("%") == l:currentBufNum
+        new
+    endif
+
+    if buflisted(l:currentBufNum)
+        execute("bdelete! ".l:currentBufNum)
+    endif
+endfunction
+
+
+inoremap <C-e> <C-o>$
+inoremap <C-a> <C-o>0
+
+" map backspace to x in visual mode
+" so when you select a region, it immediately deletes it
+vmap <BS> x
