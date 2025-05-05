@@ -40,7 +40,7 @@ Other files that may impact your environment are `~/.profile`, `~/.bash_profile`
 
 ### Environment variables
 * **`ENV_HOME_DIR`**: where this project resides
-* **`ENV_DATA_DIR`**: at the same level as `ENV_HOME_DIR`, but is always defined as `.env`
+* **`ENV_DATA_DIR`**: `~/.env`
   * `$ENV_DATA_DIR/ext`: where config and script files are located, extension of env itself
   * `$ENV_DATA_DIR/data`: where data files are located, such as emacs backup files
 
@@ -52,8 +52,8 @@ Other files that may impact your environment are `~/.profile`, `~/.bash_profile`
 * `$ENV_DATA_DIR/data/bash`: history file
 * `$ENV_DATA_DIR/data/emacs/backup`: emacs backup files location
 
-### Customizations
-Consider looking at the files below for customizations.
+### Additional Customizations
+Consider looking at the files below for additional customizations.
 ```
 $ENV_HOME_DIR/shell/aliases.sh
 ```
@@ -93,6 +93,7 @@ of platforms.
 * `allHeaders`: shows all HTTP headers of a given url (only if curl is available)
 * `c`: calculate a mathematical expression
 * `gitCommit`: commits all changes to the current branch along with the required comment
+* `gitCreate`: creates a new repository at github using [`gh`](http://cli.github.com/)
 
 ## Files and directories
 
@@ -461,18 +462,3 @@ pip3 install moduleName --user
 * `Finder Preferences > Advanced > When performaing a search > Search the Current Folder`
 * `System Preferences > Trackpad > Tap to Click`: Check
 * `System Preferences > Accessibility > Pointer Control > Trackpad Options > Enable Dragging`: Check
-
-
-## git and github
-Install the [github client](https://cli.github.com/)
-
-- To create a new repository from the existing sources
-```
-cd ~/project_dir
-git init
-gh repo create my-project --private --source=. --remote=upstream
-git commit --allow-empty -n -m "Initial commit."
-git branch -M main 
-git commit -m "first version"
-git push -u origin main
-```
