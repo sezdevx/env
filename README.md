@@ -1,30 +1,49 @@
-# Purpose of this Project
+# env 
 A set of scripts, documentation, programs for a productive development environment.
 
-* [How to install](#how-to-install)
-* [Aliases](#aliases)
-* [Files and directories](#files-and-directories)
-* [Compressing and Decompressing Files](#compressing-and-decompressing-files)
-* [Encryption/Decryption](#encryptiondecryption)
-* [Displaying system and environment information](#displaying-system-and-environment-information)
-* [Managing simple bash variables](#managing-simple-bash-variables)
-* [Time functions](#time-functions)
-* [Snapshoting directories](#snapshoting-directories)
-
 ## How to install
-`~/env/` directory contains where this project resides. In order to use it
-you need to include the following in your `~/.profile` or `~/.bashrc` files:
-
 ```bash
-. ~/env/shell/bash_start.sh
+cd ~/
+git clone https://github.com/sezdevx/env.git
+echo ". ~/env/shell/bash_start.sh" >> ~/.bashrc
+echo ". ~/env/shell/zsh_start.sh" >> ~/.zshrc
 ```
 
-For `zsh`, include the following in your `~/.zshrc` or `~/.zprofile`:
-```zsh
-. ~/env/shell/zsh_start.sh
-```
+Alternatively you can put `. ~/env/shell/bash_start.sh` to `~/.profile` for `bash`
+and `. ~/env/shell/zsh_start.sh` to `~/.zprofil` for `zsh`. You don't have to install
+`env` to `~/`, you can install it anywhere you want, as long as you put the correct
+path to `bash_start.sh` and `zsh_start.sh` in their respective config files it doesn't 
+matter. However, by default env will create `~/.env` to keep certain files, such as emacs
+backup files and shell history file.
 
-**You can rename `~/env` to any directory you want**.
+Notice that `/etc/profile` is likely to impact your bash environment.
+Other files that may impact your environment are `~/.profile`, `~/.bash_profile`,
+`~/.bash_login` and `~/.bashrc`. For `zsh`, it is `~/.zshrc` and `~/.zprofile` and similar files.
+
+## Aliases and Functions
+
+* `..`: go one directory up
+* `paths`: show PATH environment variable as a list of paths
+* `lsl`: detailed list of files
+* `lsa`: non-detailed list of files
+* `sane`: use it when your screen is messed up, can't see what you type or when `CTRL-C` does not work
+* `download`: download a url to a local file (if curl or wget is available)
+* `openResource`: tries to open the given path with the OS's assigned app, if can't do that it prints it
+* `c`: calculate a mathematical expression, just type c and enter, then type your expression or quote the expression
+* `gitCommit`: commits all changes to the current branch along with the required comment
+* `gitCreate`: creates a new repository at github using [`gh`](http://cli.github.com/)
+* `dus`: how much current directory occupies in size
+* `duh`: this directory and its direct subdirectories reported
+* `download`: fetch a given url and download it
+* `setTitle`: to set a custom title for the terminal window you are working on
+* `resetTitle`: to reset the title to its default value
+* `enableCore`: to enable cores again (by default it is off)
+* `disableCore`: to disable cores again
+* `getMd5`: gets the md5 of a given file
+* `httpHeaders`: shows request and reponse headers for a given url (only if curl is available)
+* `localTime`: time in local time zone
+* `findFiles`: find files/directories with a pattern in name e.g. `findFiles "*~"`
+
 
 **When passing parameters to library functions make sure that you quote them**. For example
 ```bash
@@ -34,19 +53,16 @@ findFiles `*~`
 If you pass it without quote, bash will expand *~ and pass the matching files to the function, not the
 '*~'.
 
-Notice that `/etc/profile` is likely to impact your bash environment.
-Other files that may impact your environment are `~/.profile`, `~/.bash_profile`,
-`~/.bash_login` and `~/.bashrc`. For `zsh`, it is `~/.zshrc` and `~/.zprofile`.
-
 ### Environment variables
-* **`ENV_HOME_DIR`**: where this project resides
-* **`ENV_DATA_DIR`**: `~/.env`
+* **`ENV_HOME_DIR`**: where the project files reside
+* **`ENV_DATA_DIR`**: `~/.env` 
   * `$ENV_DATA_DIR/ext`: where config and script files are located, extension of env itself
   * `$ENV_DATA_DIR/data`: where data files are located, such as emacs backup files
 
 ### Variables defined in lib.sh
 * **`ENV_ARCH`**: either `32` or `64` depending on the architecture of the CPU
 * **`ENV_PLATFORM`**: `Mac` or `Linux` or `Cygwin` or `WSL`
+* **`LOCAL_TIME_ZONE`**: we try to detect the local time zone
 
 ### Data directories and files
 * `$ENV_DATA_DIR/data/bash`: history file
@@ -65,35 +81,6 @@ This value is being used in various locations for display purposes. **By default
 `Etc/UTC` and prefer to work with UTC mostly**. We use the local time zone in certain locations,
 such as the bash prompt. `LOCAL_TIME_ZONE` is also used in certain functions due to limitations
 of platforms.
-
-## Aliases and Functions
-
-* `lsl`: detailed list of files
-* `lsa`: non-detailed list of files
-* `sane`: use it when your screen is messed up, can't see what you type
-* `reloadEnv`: reread the start.sh, so changes are reflected
-* `updateEnv`: updates the local env from github and rereads the start.sh
-* `..`: go one directory up
-* `dus`: how much current directory occupies in size
-* `duh`: this directory and its direct subdirectories reported
-* `paths`: show PATH environment variable as a list of paths
-* `localDate`: time and date in local time zone (except on WSL (Linux on Windows))
-* `utcDate`: time and date in UTC time zone
-* `localTime`: time in local time zone
-* `download`: fetch a given url and download it
-* `setTitle`: to set a custom title for the terminal window you are working on
-* `resetTitle`: to reset the title to its default value
-* `enableCore`: to enable cores again (by default it is off)
-* `disableCore`: to disable cores again
-* `getMd5`: gets the md5 of a given file
-* `openResource`: tries to open the given path with the OS's assigned app, if can't open it, it prints on the terminal.
- For the following it opens github page of respective documentation (env|bash|emacs|vim|git|awk)
-* `download`: download a url to a local file (if curl or wget is available)
-* `responseHeaders`: shows reponse headers of a given url (only if curl is available)
-* `allHeaders`: shows all HTTP headers of a given url (only if curl is available)
-* `c`: calculate a mathematical expression
-* `gitCommit`: commits all changes to the current branch along with the required comment
-* `gitCreate`: creates a new repository at github using [`gh`](http://cli.github.com/)
 
 ## Files and directories
 
@@ -314,21 +301,11 @@ Displays general system information which includes
 * Kernel version
 * For each file system available space and use percentage
 
-## Fixing permissions recursively in a directory
-**fixPermissions.sh** is used to fix file permissions for a given path.
-It is primarily useful in mixed environments (e.g. with windows)
-where file permissions are messed up and need to be fixed.
-Notice that it sets shell files as executable.
-
 ## Finding duplicates files recursively in a directory
 **findDuplicateFiles.sh** can be used to list all duplicate files in a given
 directory path. It does not remove them, so you can collect the output
 and remove them by another script if necessary. A sample script code
 is provided in the script file.
-
-## Finding open ports locally
-**findOpenPorts.sh** can be used to list all ports where local programs
-are listening on.
 
 ## Managing simple bash variables
 **manageVars** is used to manage variables in **$ENV_HOME_DIR/ext/bash/bashVars.sh** file.

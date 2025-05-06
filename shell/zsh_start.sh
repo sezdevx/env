@@ -50,4 +50,3 @@ ulimit -S -c 0
 
 # disable messaging, turn off talk and write (not installed on cygwin by default)
 [[ `command -v mesg` ]] &&  tty -s && mesg n
-

@@ -36,11 +36,6 @@ alias sane="stty sane; trap INT"
 # to remove emacs files
 alias edel="\rm *~; \rm .*~"
 
-# to reread this file from the shell
-alias reloadEnv=". $ENV_HOME_DIR/shell/zsh_start.sh"
-# to update and reload env
-alias updateEnv="cd $ENV_HOME_DIR && git pull && reloadEnv; cd $OLDPWD"
-
 # easier navigation
 alias cd..="cd .."
 alias ..="cd .."
@@ -71,8 +66,8 @@ alias tm="tmux attach"
 alias tmls="tmux list-sessions"
 alias tmkill="tmux kill-server"
 
-alias localDate="TZ=$LOCAL_TIME_ZONE date  '+$ISO_DATE_FMT'"
-alias utcDate="TZ=Etc/UTC date -u '+$ISO_DATE_FMT'"
+# alias localDate="TZ=$LOCAL_TIME_ZONE date  '+$ISO_DATE_FMT'"
+# alias utcDate="TZ=Etc/UTC date -u '+$ISO_DATE_FMT'"
 alias localTime="TZ=$LOCAL_TIME_ZONE date  '+%H:%M:%S'"
 
 if [[ `command -v python3` ]]; then
@@ -89,11 +84,12 @@ alias who='who -u'
 
 if [ `command -v curl` ]; then
     alias download='curl -L -C - -O --retry 5'
-    alias responseHeaders='curl -D - -so /dev/nul'
-    alias allHeaders='curl -v -so /dev/nul'
+    alias httpHeaders='curl -v -so /dev/nul'
 elif [ `command -v wget` ]; then
     alias download='wget -c'
+    alias httpHeaders='echo "No curl found"'
 else
     alias download='echo "No wget or curl found"'
+    alias httpHeaders='echo "No curl found"'
 fi
 
