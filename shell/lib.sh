@@ -583,7 +583,7 @@ function git_prompt()
 # [bc]
 if hasCommand 'bc' ; then
     export BC_ENV_ARGS="$ENV_HOME_DIR/etc/bc_init.txt"
-    # you can do simple math as "c 2 + 5" or
+    # you can do simple math as "c 2 + 5" or or "c '2 * 5'"
     # don't give any arguments and instead type the expression
     alias c='set -f; c'
     function c()

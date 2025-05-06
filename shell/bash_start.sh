@@ -2,8 +2,8 @@
 # included from ~/.bashrc or ~/.profile or ~/.bash_profile
 
 # this directory
-export SHELL_ETC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-export ENV_HOME_DIR="$(dirname "$SHELL_ETC_DIR")"
+SHELL_PARENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export ENV_HOME_DIR="$(dirname "$SHELL_PARENT_DIR")"
 # PARENT_OF_ENV_DIR="$(dirname "$ENV_HOME_DIR")"
 # export ENV_DATA_DIR=$PARENT_OF_ENV_DIR/.env
 export ENV_DATA_DIR="$HOME/.env"
@@ -16,11 +16,11 @@ export ENV_DATA_DIR="$HOME/.env"
 [[ ! -d $ENV_DATA_DIR/ext ]] && mkdir $ENV_DATA_DIR/ext
 [[ ! -d $ENV_DATA_DIR/ext/emacs ]] && mkdir $ENV_DATA_DIR/ext/emacs
 
-source $SHELL_ETC_DIR/lib.sh
-source $SHELL_ETC_DIR/aliases.sh
+source $SHELL_PARENT_DIR/lib.sh
+source $SHELL_PARENT_DIR/aliases.sh
 
 # [Paths]
-[[ -d $SHELL_ETC_DIR/bin ]] && prependPath PATH $SHELL_ETC_DIR/bin
+[[ -d $SHELL_PARENT_DIR/shell/bin ]] && prependPath PATH $SHELL_PARENT_DIR/shell/bin
 [[ -d $ENV_HOME_DIR/bin/$ENV_PLATFORM/$ENV_ARCH ]] && prependPath PATH $ENV_HOME_DIR/bin/$ENV_PLATFORM/$ENV_ARCH
 [[ -d $ENV_HOME_DIR/bin/$ENV_PLATFORM ]] && prependPath PATH $ENV_HOME_DIR/bin/$ENV_PLATFORM
 [[ -d $ENV_HOME_DIR/bin ]] && prependPath PATH $ENV_HOME_DIR/bin
