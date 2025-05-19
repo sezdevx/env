@@ -44,7 +44,7 @@ setopt HIST_IGNORE_ALL_DUPS
 # setopt inc_append_history
 # setopt SHARE_HISTORY
 
-bindkey -e 
+# bindkey -e 
 # disable core
 ulimit -S -c 0
 

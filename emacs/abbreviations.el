@@ -165,4 +165,11 @@
 (define-abbrev-table 'global-abbrev-table '(
     ("deb" "debug" nil 0)
     ))
+(define-abbrev-table 'go-mode-abbrev-table '(
+    ("pa" "package" nil 0)
+    ("im" "import" nil 0)
+    ("pr" "fmt.Println(" nil 0)
+    ("ty" "type" nil 0)
+    ("st" "struct" nill 0)
+    ))
 

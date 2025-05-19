@@ -454,8 +454,12 @@ function gitCreate() {
     cd $1
     git init
     gh repo create $1 --private --source=. --remote=upstream
-    touch README.md
-    git add README.md
+    touch .gitignore
+    echo "**/build" >> .gitignore
+    echo "*.so" >> .gitignore
+    echo "*.dylib" >> .gitignore
+    echo "*.out" >> .gitignore
+    git add .gitignore
     git commit -m "first commit"
     git push --set-upstream upstream main
 }

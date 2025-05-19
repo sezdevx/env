@@ -65,6 +65,7 @@ alias tmux="tmux -f ${ENV_HOME_DIR}/etc/tmux.conf"
 alias tm="tmux attach"
 alias tmls="tmux list-sessions"
 alias tmkill="tmux kill-server"
+alias gobuild="go build $1 -o ./build"
 
 # alias localDate="TZ=$LOCAL_TIME_ZONE date  '+$ISO_DATE_FMT'"
 # alias utcDate="TZ=Etc/UTC date -u '+$ISO_DATE_FMT'"
